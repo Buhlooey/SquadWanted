@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=3 uid="uid://b1gx5xkjckbnj"]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_2307w"]
+[ext_resource type="PackedScene" uid="uid://c27lca7s0qdm0" path="res://scenes/Face.tscn" id="2_5ueqc"]
+[ext_resource type="PackedScene" uid="uid://dedmovqpm72jd" path="res://scenes/CorrectFace.tscn" id="2_iyrku"]
+[ext_resource type="AudioStream" uid="uid://bompfsegsib2m" path="res://assets/Wanted.ogg" id="4_pv6o5"]
+[ext_resource type="Texture2D" uid="uid://f3y81dyntbmi" path="res://assets/BGBrick.png" id="5_gpqmi"]
+[ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="6_xssbk"]
+
+[sub_resource type="Gradient" id="Gradient_mla51"]
+colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wrlmn"]
+gradient = SubResource("Gradient_mla51")
+width = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3cqv8"]
+size = Vector2(488, 368)
+
+[node name="Main" type="Node2D"]
+
+[node name="BG" type="Sprite2D" parent="."]
+position = Vector2(7.62939e-06, 0)
+scale = Vector2(640, 360)
+texture = SubResource("GradientTexture1D_wrlmn")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_pv6o5")
+volume_db = -12.0
+autoplay = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Game" type="Node2D" parent="."]
+position = Vector2(80, 0)
+script = ExtResource("1_2307w")
+ruleFaces = 2
+ruleMoveVelocity = Vector2(600, 400)
+correctFaceScene = ExtResource("2_iyrku")
+incorrectFaceScene = ExtResource("2_5ueqc")
+
+[node name="GameArea" type="Area2D" parent="Game"]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/GameArea"]
+shape = SubResource("RectangleShape2D_3cqv8")
+
+[node name="WantedBg" type="Sprite2D" parent="Game"]
+texture_filter = 1
+position = Vector2(-320, 0)
+texture = ExtResource("5_gpqmi")
+
+[node name="WantedIcon" type="Sprite2D" parent="Game"]
+position = Vector2(-320, -40)
+scale = Vector2(0.781, 0.781)
+texture = ExtResource("6_xssbk")
+
+[connection signal="body_exited" from="Game/GameArea" to="Game" method="_on_game_area_body_exited"]
