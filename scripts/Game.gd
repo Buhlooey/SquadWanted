@@ -3,8 +3,8 @@ extends Node2D
 # ~~~~~~~~~~~~~~~ VARIABLES ~~~~~~~~~~~~~~~
 
 # ~~~~~ Game Rules ~~~~~
+## The number of incorrect faces generated alongside the correct face.
 @export var ruleFaces: int
-
 
 @export var ruleMoveVelocity: Vector2
 @export var ruleSameMovement: float
@@ -25,11 +25,14 @@ extends Node2D
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
 var gameArea: Rect2
 
+
+# ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	gameArea = gameAreaCollider.get_shape().get_rect()
 	initializeFace(correctFaceScene)
-	for i in range(ruleFaces - 1):
+	for i in range(ruleFaces):
 		initializeFace(incorrectFaceScene)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

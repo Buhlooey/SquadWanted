@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://b1gx5xkjckbnj"]
 
-[ext_resource type="Script" path="res://scripts/Game.gd" id="1_2307w"]
+[ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="PackedScene" uid="uid://c27lca7s0qdm0" path="res://scenes/Face.tscn" id="2_5ueqc"]
 [ext_resource type="PackedScene" uid="uid://dedmovqpm72jd" path="res://scenes/CorrectFace.tscn" id="2_iyrku"]
 [ext_resource type="AudioStream" uid="uid://bompfsegsib2m" path="res://assets/Wanted.ogg" id="4_pv6o5"]
@@ -35,7 +35,7 @@ autoplay = true
 position = Vector2(80, 0)
 script = ExtResource("1_2307w")
 ruleFaces = 2
-ruleMoveVelocity = Vector2(600, 400)
+ruleMoveVelocity = Vector2(300, 200)
 correctFaceScene = ExtResource("2_iyrku")
 incorrectFaceScene = ExtResource("2_5ueqc")
 
@@ -46,11 +46,13 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_3cqv8")
 
 [node name="WantedBg" type="Sprite2D" parent="Game"]
+z_index = 1
 texture_filter = 1
 position = Vector2(-320, 0)
 texture = ExtResource("5_gpqmi")
 
 [node name="WantedIcon" type="Sprite2D" parent="Game"]
+z_index = 2
 position = Vector2(-320, -40)
 scale = Vector2(0.781, 0.781)
 texture = ExtResource("6_xssbk")

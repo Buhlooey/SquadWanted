@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dedmovqpm72jd"]
 
-[ext_resource type="Script" path="res://scripts/CorrectFace.gd" id="1_46oh6"]
+[ext_resource type="Script" uid="uid://rh4hp05vmji6" path="res://scripts/CorrectFace.gd" id="1_46oh6"]
 [ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="2_bjc8r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tt44h"]
