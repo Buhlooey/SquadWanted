@@ -7,10 +7,10 @@
 resource_local_to_scene = true
 radius = 32.0
 
-[node name="Face" type="CharacterBody2D"]
+[node name="Face" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
 input_pickable = true
-motion_mode = 1
+floor_stop_on_slope = false
 script = ExtResource("1_d3ht4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -21,9 +21,4 @@ texture = ExtResource("2_8lhb7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tt44h")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(-1.90735e-06, -1.90735e-06)
-scale = Vector2(3.2, 3.2)
-
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

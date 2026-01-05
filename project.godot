@@ -33,6 +33,11 @@ folder_colors={
 "res://scripts/": "yellow"
 }
 
+[global_group]
+
+Face=""
+Edge=""
+
 [input]
 
 click={
