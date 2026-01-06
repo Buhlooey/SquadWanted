@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://babsqbvu378hf"
+path="res://.godot/imported/Wanted Square 1M Walkup.wav-42009ffe2aa5cb94a921f7692c6e9a53.sample"
+
+[deps]
+
+source_file="res://assets/fmodproj/Assets/Wanted Square 1M Walkup.wav"
+dest_files=["res://.godot/imported/Wanted Square 1M Walkup.wav-42009ffe2aa5cb94a921f7692c6e9a53.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

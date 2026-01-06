@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 .vscode/
+assets/fmodproj/.cache/
+assets/fmodproj/.user/
+assets/fmodproj/Metadata/

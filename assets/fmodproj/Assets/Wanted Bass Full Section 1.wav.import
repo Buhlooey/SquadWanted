@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cord026sslr1a"
+path="res://.godot/imported/Wanted Bass Full Section 1.wav-fad9e8dfcb1f1f6e33e542d3807fcaee.sample"
+
+[deps]
+
+source_file="res://assets/fmodproj/Assets/Wanted Bass Full Section 1.wav"
+dest_files=["res://.godot/imported/Wanted Bass Full Section 1.wav-fad9e8dfcb1f1f6e33e542d3807fcaee.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

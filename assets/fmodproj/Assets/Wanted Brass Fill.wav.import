@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bngpwrchgl13l"
+path="res://.godot/imported/Wanted Brass Fill.wav-81fa08bf6bf056bfaf2c1b78e4482565.sample"
+
+[deps]
+
+source_file="res://assets/fmodproj/Assets/Wanted Brass Fill.wav"
+dest_files=["res://.godot/imported/Wanted Brass Fill.wav-81fa08bf6bf056bfaf2c1b78e4482565.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
