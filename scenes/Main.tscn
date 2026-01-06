@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1gx5xkjckbnj"]
+[gd_scene load_steps=15 format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
-[ext_resource type="PackedScene" uid="uid://c27lca7s0qdm0" path="res://scenes/Face.tscn" id="2_5ueqc"]
-[ext_resource type="PackedScene" uid="uid://dedmovqpm72jd" path="res://scenes/CorrectFace.tscn" id="2_iyrku"]
-[ext_resource type="Texture2D" uid="uid://f3y81dyntbmi" path="res://assets/BGBrick.png" id="5_gpqmi"]
+[ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/BGBrick.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
+[ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
@@ -72,11 +71,7 @@ text = "SQUANTED!!!!!!!!!"
 [node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
-faces = 20
-moveVelocity = 100
-doBounceOnEdges = true
-correctFaceScene = ExtResource("2_iyrku")
-incorrectFaceScene = ExtResource("2_5ueqc")
+faces = 80
 
 [node name="GameArea" type="Area2D" parent="Game"]
 collision_mask = 2
@@ -129,11 +124,11 @@ shape = SubResource("RectangleShape2D_c01mt")
 z_index = 1
 texture_filter = 1
 position = Vector2(-320, 0)
-texture = ExtResource("5_gpqmi")
+texture = ExtResource("4_c01mt")
 
 [node name="WantedIcon" type="Sprite2D" parent="Game"]
 z_index = 2
-position = Vector2(-320, -40)
+position = Vector2(-320, 10)
 scale = Vector2(4, 4)
 texture = ExtResource("7_nxtc6")
 
@@ -145,17 +140,53 @@ offset_left = -400.0
 offset_top = -180.0
 offset_right = -240.0
 offset_bottom = 180.0
+theme = ExtResource("6_c01mt")
+
+[node name="ScoreTitleText" type="RichTextLabel" parent="Game/TimeAndScore"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 254.0
+offset_right = 159.0
+offset_bottom = 296.0
+bbcode_enabled = true
+text = "[center]Score[/center]"
+scroll_active = false
 
 [node name="ScoreText" type="RichTextLabel" parent="Game/TimeAndScore"]
 layout_mode = 0
 offset_left = 1.0
-offset_top = 301.0
+offset_top = 272.0
 offset_right = 159.0
-offset_bottom = 349.0
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 30
-text = "Score:"
+offset_bottom = 360.0
+theme = ExtResource("6_c01mt")
+theme_override_font_sizes/bold_font_size = 64
+bbcode_enabled = true
+text = "[center][b]0[/b][/center]"
 scroll_active = false
+
+[node name="TimeTitleText" type="RichTextLabel" parent="Game/TimeAndScore"]
+layout_mode = 0
+offset_left = 1.0
+offset_right = 159.0
+offset_bottom = 42.0
+bbcode_enabled = true
+text = "[center]Time[/center]"
+scroll_active = false
+
+[node name="TimeText" type="RichTextLabel" parent="Game/TimeAndScore"]
+layout_mode = 0
+offset_top = 22.0
+offset_right = 160.0
+offset_bottom = 112.0
+theme = ExtResource("6_c01mt")
+theme_override_font_sizes/bold_font_size = 64
+bbcode_enabled = true
+text = "[center][b]10[font_size=32].0"
+scroll_active = false
+
+[node name="GameTimer" type="Timer" parent="Game"]
+wait_time = 30.0
+one_shot = true
 
 [node name="CorrectGuessPauseTimer" type="Timer" parent="Game"]
 wait_time = 3.0

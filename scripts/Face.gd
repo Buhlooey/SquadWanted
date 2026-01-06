@@ -10,7 +10,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var correctAudios: Array = $CorrectAudio.get_children()
 @onready var incorrectAudios: Array = $IncorrectAudio.get_children()
 @onready var eyesSprite: Sprite2D = $Eyes
-var spriteSize: int = 48
+var spriteSize: int = 72
 
 func _ready():
 	eyesSprite.set_visible(false)

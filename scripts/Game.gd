@@ -15,16 +15,13 @@ enum PlaceMode {SCATTERED, GRID, BORDER, CLUSTERS, BOUNCE}
 @export var sameMoveDir: bool
 var moveAngle: float = INVALID_ANGLE
 
-@export var doWaveMovementX: bool
+@export var doWaveMovementX: bool # TODO: Implement wave movement
 @export var doWaveMovementY: bool
 
 @export var doGravity: bool
 @export var doBounceOnEdges: bool
 
-@export var sizeScale: float
-
-@export var correctFaceScene: PackedScene
-@export var incorrectFaceScene: PackedScene
+# ~~~~~ Faces ~~~~~
 var faceSet1: Array[PackedScene] = [
 	preload('res://scenes/faces/FaceAlex.tscn'),
 	preload('res://scenes/faces/FaceSoda.tscn'),
@@ -34,18 +31,19 @@ var faceSet1: Array[PackedScene] = [
 var currFaceSet: Array[PackedScene]
 var currWantedFace: PackedScene
 
+# ~~~~~ Child Node References ~~~~~
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
 var gameArea: Rect2
-
-var score: int = 0
-
 @onready var staticBorder: StaticBody2D = $StaticBorder
 
-@onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
-
-@onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
-
 @onready var wantedIcon: Sprite2D = $WantedIcon
+@onready var timeTextLabel: RichTextLabel = $TimeAndScore/TimeText
+@onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
+@onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
+@onready var gameTimer: Timer = $GameTimer
+
+# ~~~~~ Other Variables ~~~~~
+var score: int = 0
 
 
 # ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
@@ -59,7 +57,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
-	pass
+	updateTimeTextLabel()
 
 
 func initializeRound():
@@ -109,10 +107,8 @@ func initializeRound():
 			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
 				face = currWantedFace
 				wanted = true
-				print("spawning wanted face")
 			else:
 				face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
-				print("spawning non-wanted face")
 
 			initializeFace(face,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x),
@@ -122,6 +118,10 @@ func initializeRound():
 							randomizeAngleIfApplicable())
 
 	set_visible(true)
+	if gameTimer.is_paused():
+		gameTimer.set_paused(false)
+	else:
+		gameTimer.start()
 
 	currFaceSet.append(currWantedFace)
 
@@ -153,7 +153,7 @@ func randomizeAngleIfApplicable() -> float:
 
 
 func updateScoreTextLabel() -> void:
-	scoreTextLabel.text = str("Score: ", score)
+	scoreTextLabel.text = str("[center][b]", score)
 
 func incrementScore() -> void:
 	score += 1
@@ -163,6 +163,14 @@ func resetScore() -> void:
 	score = 0
 	updateScoreTextLabel()
 
+func updateTimeTextLabel() -> void:
+	var time: float = gameTimer.time_left
+	var intPart: int = int(time)
+	var decPart: float = snapped(time - intPart, 0.1)
+	timeTextLabel.text = str("[center][b]", intPart, "[font_size=32]", str(decPart).lstrip("0").lstrip("1")) 
+	# timeTextLabel.text = str("[right][b]", str(floor(gameTimer.time_left)).rstrip("."))
+	# var snappedDecimal: float = snapped(gameTimer.time_left - floorf(gameTimer.time_left), 0.1)
+	# timeDecimalTextLabel.text = str("[left][b]", str(snappedDecimal).lstrip("0"))
 
 func clearFaces(onlyIncorrect: bool = false):
 	for child in get_children():
@@ -186,12 +194,16 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 				for body in bodies:
 					var thisFace: Node2D = instance_from_id(body["collider_id"])
 					if thisFace and thisFace.is_in_group("CorrectFace"):
+						print(gameTimer.get_time_left())
+						gameTimer.set_wait_time(gameTimer.get_time_left() + 5)
+						gameTimer.set_paused(true)
 						thisFace.clickFace()
 						correctFaceFound = true
 						incrementScore()
 						clearFaces(true)
 
-						moveVelocity += 20
+
+						# moveVelocity += 20
 						faces += 2
 						correctGuessPauseTimer.start()
 						await correctGuessPauseTimer.timeout

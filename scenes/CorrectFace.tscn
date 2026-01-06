@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dedmovqpm72jd"]
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_g7bx0"]
-[ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="2_bjc8r"]
+[ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/images/icon.svg" id="2_bjc8r"]
 [ext_resource type="AudioStream" uid="uid://du4de734ilbk3" path="res://assets/sound/buhlooey jumpscare scream.wav" id="3_g7bx0"]
 [ext_resource type="AudioStream" uid="uid://dw3haogd8tvbx" path="res://assets/sound/Tyler1 HELP HEEEELLLLPPP.mp3" id="4_m3gul"]
 [ext_resource type="AudioStream" uid="uid://rncqe3ugr7tx" path="res://assets/sound/Bruh.mp3" id="5_mke1v"]
