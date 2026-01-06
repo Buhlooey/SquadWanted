@@ -85,33 +85,42 @@ func initializeRound():
 		pass # create a set number of clusters, then add faces as children of those clusters
 
 	elif placementMode == PlaceMode.BOUNCE:
-		initializeFace(currWantedFace,
-						Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
-						true,
-						moveVelocity,
-						randomizeAngleIfApplicable())
+		# scatter faces in a row near the top of the game area so they can fall and bounce
 		for i in range(faces):
-			initializeFace(currFaceSet[randi_range(0, currFaceSet.size()-1)],
+			var face: PackedScene
+			var wanted: bool = false
+			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
+				face = currWantedFace
+				wanted = true
+			else:
+				face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+
+			initializeFace(face,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
-							false,
+							wanted,
 							moveVelocity,
 							randomizeAngleIfApplicable())
 
 	else: # SCATTERED is default
-		# create faces scattered randomly about the board
-		initializeFace(currWantedFace,
-						Vector2(randf_range(gameArea.position.x, gameArea.end.x),
-								randf_range(gameArea.position.y, gameArea.end.y)),
-						true,
-						moveVelocity,
-						randomizeAngleIfApplicable())
+		# scatter faces randomly about the board
 		for i in range(faces):
-			initializeFace(currFaceSet[randi_range(0, currFaceSet.size()-1)],
+			var face: PackedScene
+			var wanted: bool = false
+			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
+				face = currWantedFace
+				wanted = true
+				print("spawning wanted face")
+			else:
+				face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+				print("spawning non-wanted face")
+
+			initializeFace(face,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x),
 									randf_range(gameArea.position.y, gameArea.end.y)),
-							false,
+							wanted,
 							moveVelocity,
 							randomizeAngleIfApplicable())
+
 	set_visible(true)
 
 	currFaceSet.append(currWantedFace)

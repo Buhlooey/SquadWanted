@@ -72,10 +72,8 @@ text = "SQUANTED!!!!!!!!!"
 [node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
-faces = 10
-placementMode = 4
+faces = 20
 moveVelocity = 100
-doGravity = true
 doBounceOnEdges = true
 correctFaceScene = ExtResource("2_iyrku")
 incorrectFaceScene = ExtResource("2_5ueqc")
