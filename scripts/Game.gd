@@ -25,18 +25,27 @@ var moveAngle: float = INVALID_ANGLE
 
 @export var correctFaceScene: PackedScene
 @export var incorrectFaceScene: PackedScene
+var faceSet1: Array[PackedScene] = [
+	preload('res://scenes/faces/FaceAlex.tscn'),
+	preload('res://scenes/faces/FaceSoda.tscn'),
+	preload('res://scenes/faces/FaceDyl.tscn'),
+	preload('res://scenes/faces/FaceTyflo.tscn'),
+]
+var currFaceSet: Array[PackedScene]
+var currWantedFace: PackedScene
 
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
 var gameArea: Rect2
 
 var score: int = 0
 
-# @onready var edges: Node2D = $Edges
 @onready var staticBorder: StaticBody2D = $StaticBorder
 
 @onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
 
 @onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
+
+@onready var wantedIcon: Sprite2D = $WantedIcon
 
 
 # ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
@@ -45,12 +54,15 @@ var score: int = 0
 func _ready():
 	set_visible(false)
 
+	for face in faceSet1:
+		currFaceSet.append(face)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
 	pass
 
 
-func initializeGame():
+func initializeRound():
 	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	# Enable/disable bouncing
@@ -59,6 +71,9 @@ func initializeGame():
 	else:
 		staticBorder.process_mode = Node.PROCESS_MODE_DISABLED
 
+	# Choose wanted face
+	currWantedFace = currFaceSet.pop_at(randi_range(0, faceSet1.size()-1))
+	
 	# Place faces
 	if placementMode == PlaceMode.GRID:
 		pass # place faces on a grid
@@ -70,13 +85,13 @@ func initializeGame():
 		pass # create a set number of clusters, then add faces as children of those clusters
 
 	elif placementMode == PlaceMode.BOUNCE:
-		initializeFace(correctFaceScene,
+		initializeFace(currWantedFace,
 						Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
 						true,
 						moveVelocity,
 						randomizeAngleIfApplicable())
 		for i in range(faces):
-			initializeFace(incorrectFaceScene,
+			initializeFace(currFaceSet[randi_range(0, currFaceSet.size()-1)],
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
 							false,
 							moveVelocity,
@@ -84,20 +99,23 @@ func initializeGame():
 
 	else: # SCATTERED is default
 		# create faces scattered randomly about the board
-		initializeFace(correctFaceScene,
+		initializeFace(currWantedFace,
 						Vector2(randf_range(gameArea.position.x, gameArea.end.x),
 								randf_range(gameArea.position.y, gameArea.end.y)),
 						true,
 						moveVelocity,
 						randomizeAngleIfApplicable())
 		for i in range(faces):
-			initializeFace(incorrectFaceScene,
+			initializeFace(currFaceSet[randi_range(0, currFaceSet.size()-1)],
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x),
 									randf_range(gameArea.position.y, gameArea.end.y)),
 							false,
 							moveVelocity,
 							randomizeAngleIfApplicable())
 	set_visible(true)
+
+	currFaceSet.append(currWantedFace)
+
 
 func initializeFace(scene: PackedScene, facePosition: Vector2, isWanted = false, faceVelocity: int = 0, faceMoveAngle: float = 0) -> void:
 	var faceNode: CharacterBody2D = scene.instantiate()
@@ -106,12 +124,15 @@ func initializeFace(scene: PackedScene, facePosition: Vector2, isWanted = false,
 	faceNode.set_velocity(Vector2(faceVelocity*cos(faceMoveAngle), faceVelocity*sin(faceMoveAngle)))
 	faceNode.doGravity = doGravity
 	faceNode.isWanted = isWanted
+	if isWanted:
+		faceNode.add_to_group("CorrectFace")
+		wantedIcon.set_texture(faceNode.get_child(0).texture)
 	add_child(faceNode)
 
 
-func reinitializeGame() -> void:
+func reinitializeRound() -> void:
 	clearFaces()
-	initializeGame()
+	initializeRound()
 
 
 # ~~~~~ Helpers ~~~~~
@@ -155,7 +176,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 				var correctFaceFound: bool = false
 				for body in bodies:
 					var thisFace: Node2D = instance_from_id(body["collider_id"])
-					if thisFace.is_in_group("CorrectFace"):
+					if thisFace and thisFace.is_in_group("CorrectFace"):
 						thisFace.clickFace()
 						correctFaceFound = true
 						incrementScore()
@@ -165,7 +186,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						faces += 2
 						correctGuessPauseTimer.start()
 						await correctGuessPauseTimer.timeout
-						reinitializeGame()
+						reinitializeRound()
 
 				if !correctFaceFound:
 					print("Incorrect face clicked")

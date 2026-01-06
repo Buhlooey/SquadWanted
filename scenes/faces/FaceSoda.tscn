@@ -4,12 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://d2j8m8bt12c7y" path="res://assets/images/faces/FaceSoda.png" id="2_uui13"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
-radius = 12.0
+radius = 24.0
 
-[node name="FaceSoda" type="CharacterBody2D"]
+[node name="FaceSoda" type="CharacterBody2D" groups=["Face"]]
+collision_layer = 2
 script = ExtResource("1_uui13")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
 texture = ExtResource("2_uui13")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

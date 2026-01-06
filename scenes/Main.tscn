@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dedmovqpm72jd" path="res://scenes/CorrectFace.tscn" id="2_iyrku"]
 [ext_resource type="Texture2D" uid="uid://f3y81dyntbmi" path="res://assets/BGBrick.png" id="5_gpqmi"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
-[ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="6_xssbk"]
+[ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -72,8 +72,11 @@ text = "SQUANTED!!!!!!!!!"
 [node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
-faces = 1
+faces = 10
+placementMode = 4
 moveVelocity = 100
+doGravity = true
+doBounceOnEdges = true
 correctFaceScene = ExtResource("2_iyrku")
 incorrectFaceScene = ExtResource("2_5ueqc")
 
@@ -133,8 +136,8 @@ texture = ExtResource("5_gpqmi")
 [node name="WantedIcon" type="Sprite2D" parent="Game"]
 z_index = 2
 position = Vector2(-320, -40)
-scale = Vector2(0.781, 0.781)
-texture = ExtResource("6_xssbk")
+scale = Vector2(4, 4)
+texture = ExtResource("7_nxtc6")
 
 [node name="TimeAndScore" type="Control" parent="Game"]
 z_index = 3
