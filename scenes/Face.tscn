@@ -9,8 +9,6 @@ radius = 32.0
 
 [node name="Face" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
-input_pickable = true
-floor_stop_on_slope = false
 script = ExtResource("1_d3ht4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -20,5 +18,3 @@ texture = ExtResource("2_8lhb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tt44h")
-
-[connection signal="input_event" from="." to="." method="_on_input_event"]

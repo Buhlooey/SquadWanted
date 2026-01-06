@@ -53,19 +53,20 @@ func initializeGame():
 
 	# Enable/disable bouncing
 	if doBounceOnEdges:
-		print("enabling bounce")
 		staticBorder.process_mode = Node.PROCESS_MODE_INHERIT
 	else:
-		print("disabling bounce")
 		staticBorder.process_mode = Node.PROCESS_MODE_DISABLED
 
 	# Place faces
 	if placementMode == PlaceMode.GRID:
 		pass # place faces on a grid
+
 	elif placementMode == PlaceMode.BORDER:
 		pass # choose one edge, place faces on it
+
 	elif placementMode == PlaceMode.CLUSTERS:
 		pass # create a set number of clusters, then add faces as children of those clusters
+
 	elif placementMode == PlaceMode.BOUNCE:
 		initializeFace(correctFaceScene,
 						Vector2(randf_range(gameArea.position.x, gameArea.end.x),
@@ -73,8 +74,8 @@ func initializeGame():
 		for i in range(faces):
 			initializeFace(incorrectFaceScene,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80))
-	else: # SCATTERED is default
 
+	else: # SCATTERED is default
 		# create faces scattered randomly about the board
 		initializeFace(correctFaceScene,
 						Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
@@ -91,7 +92,6 @@ func initializeGame():
 func initializeFace(scene: PackedScene, facePosition: Vector2, faceVelocity: int = 0, faceMoveAngle: float = 0) -> void:
 	var faceNode: CharacterBody2D = scene.instantiate()
 	faceNode.gameNode = self
-	print(facePosition)
 	faceNode.set_global_position(facePosition)
 	faceNode.set_velocity(Vector2(faceVelocity*cos(faceMoveAngle), faceVelocity*sin(faceMoveAngle)))
 	add_child(faceNode)
@@ -100,6 +100,7 @@ func initializeFace(scene: PackedScene, facePosition: Vector2, faceVelocity: int
 func reinitializeGame() -> void:
 	clearFaces()
 	initializeGame()
+
 
 # ~~~~~ Helpers ~~~~~
 
@@ -126,8 +127,24 @@ func clearFaces():
 		if child.is_in_group("Face"):
 			child.queue_free()
 
+
 # ~~~~~ Signals ~~~~~
 
-func _on_game_area_body_exited(body: Node2D) -> void:
-	# body.screenWrap()
-	pass
+func _on_game_area_input_event(viewport:Node, event:InputEvent, shape_idx:int) -> void:
+	if event.is_action_pressed("click"):
+		var query = PhysicsPointQueryParameters2D.new()
+		query.set_position(viewport.get_mouse_position())
+		query.set_collide_with_areas(false)
+		var bodies = get_world_2d().get_direct_space_state().intersect_point(query)
+		if !bodies.is_empty():
+			print(query.position, " - ", bodies)
+			for body in bodies:
+				print(instance_from_id(body["collider_id"]))
+				if instance_from_id(body["collider_id"]).is_in_group("CorrectFace"):
+					incrementScore()
+					moveVelocity += 20
+					faces += 2
+					reinitializeGame()
+
+		# print(get_world_2d().direct_space_state.intersect_point(PhysicsPointQueryParameters2D.new()))
+		viewport.set_input_as_handled()

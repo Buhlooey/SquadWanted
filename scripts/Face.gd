@@ -24,6 +24,7 @@ func _physics_process(delta) -> void:
 		var normal = collision.get_normal()
 		# Bounce the velocity
 		velocity = velocity.bounce(normal)
+		
 		# Apply an extra push (force) for a stronger bounce
 		# velocity += normal * 1000 * delta
 
@@ -59,9 +60,3 @@ func screenWrap(edgeName:String) -> void:
 		position.x -= gameNode.gameArea.size.x + spriteSize-4
 	elif edgeName == "LeftEdge" and velocity.x < 0:
 		position.x += gameNode.gameArea.size.x + spriteSize-4
-
-func _on_input_event(_viewport:Node, event:InputEvent, _shape_idx:int) -> void:
-	if event.is_action_pressed("click"):
-		#respond to incorrect click
-		print("teehee i got yoU!!!!!!")
-		get_viewport().set_input_as_handled()

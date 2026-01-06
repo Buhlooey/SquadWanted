@@ -16,7 +16,7 @@ gradient = SubResource("Gradient_mla51")
 width = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3cqv8"]
-size = Vector2(488, 368)
+size = Vector2(480, 360)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_nxtc6"]
 friction = 0.0
@@ -37,7 +37,7 @@ size = Vector2(2, 488)
 [node name="Main" type="Node2D"]
 
 [node name="BG" type="Sprite2D" parent="."]
-position = Vector2(7.62939e-06, 0)
+position = Vector2(320, 180)
 scale = Vector2(640, 360)
 texture = SubResource("GradientTexture1D_wrlmn")
 
@@ -47,12 +47,13 @@ volume_db = -12.0
 autoplay = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(320, 180)
 
 [node name="Game" type="Node2D" parent="."]
-position = Vector2(80, 0)
+position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 faces = 1
-moveVelocity = 1000
+moveVelocity = 100
 correctFaceScene = ExtResource("2_iyrku")
 incorrectFaceScene = ExtResource("2_5ueqc")
 
@@ -135,7 +136,7 @@ theme_override_font_sizes/normal_font_size = 30
 text = "Score:"
 scroll_active = false
 
-[connection signal="body_exited" from="Game/GameArea" to="Game" method="_on_game_area_body_exited"]
+[connection signal="input_event" from="Game/GameArea" to="Game" method="_on_game_area_input_event"]
 [connection signal="body_entered" from="Game/WrapEdges/BottomEdge" to="Game/WrapEdges/BottomEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/TopEdge" to="Game/WrapEdges/TopEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/RightEdge" to="Game/WrapEdges/RightEdge" method="_on_body_entered"]

@@ -7,11 +7,9 @@
 resource_local_to_scene = true
 radius = 32.0
 
-[node name="Face" type="CharacterBody2D" groups=["Face"]]
+[node name="CorrectFace" type="CharacterBody2D" groups=["CorrectFace", "Face"]]
 process_priority = -1
 collision_layer = 2
-collision_priority = 0.01
-input_pickable = true
 script = ExtResource("1_46oh6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -20,5 +18,3 @@ texture = ExtResource("2_bjc8r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tt44h")
-
-[connection signal="input_event" from="." to="." method="_on_input_event"]
