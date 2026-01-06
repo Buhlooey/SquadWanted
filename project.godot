@@ -23,7 +23,7 @@ DSP/dsp_buffer_count=4
 "3D Settings/distance_factor"=1.0
 "3D Settings/rolloff_scale"=1.0
 General/is_live_update_enabled=true
-General/banks_path="res://"
+General/banks_path="res://assets/fmodproj/Build/Desktop"
 General/is_memory_tracking_enabled=false
 General/should_load_by_name=false
 

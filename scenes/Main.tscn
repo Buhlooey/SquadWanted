@@ -1,9 +1,9 @@
 [gd_scene load_steps=16 format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
+[ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://c27lca7s0qdm0" path="res://scenes/Face.tscn" id="2_5ueqc"]
 [ext_resource type="PackedScene" uid="uid://dedmovqpm72jd" path="res://scenes/CorrectFace.tscn" id="2_iyrku"]
-[ext_resource type="AudioStream" uid="uid://bompfsegsib2m" path="res://assets/Wanted.ogg" id="4_pv6o5"]
 [ext_resource type="Texture2D" uid="uid://f3y81dyntbmi" path="res://assets/BGBrick.png" id="5_gpqmi"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="6_xssbk"]
@@ -41,15 +41,35 @@ position = Vector2(320, 180)
 scale = Vector2(640, 360)
 texture = SubResource("GradientTexture1D_wrlmn")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_pv6o5")
-volume_db = -12.0
-autoplay = true
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(320, 180)
 
-[node name="Game" type="Node2D" parent="."]
+[node name="TitleScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 360.0
+offset_bottom = 220.0
+script = ExtResource("1_nxtc6")
+
+[node name="StartButton" type="Button" parent="TitleScreen"]
+layout_mode = 0
+offset_left = -47.0
+offset_top = 35.0
+offset_right = 49.0
+offset_bottom = 66.0
+text = "Start Game"
+
+[node name="Title" type="RichTextLabel" parent="TitleScreen"]
+layout_mode = 0
+offset_left = -73.0
+offset_top = -75.0
+offset_right = 117.0
+offset_bottom = -35.0
+text = "SQUANTED!!!!!!!!!"
+
+[node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 faces = 1
@@ -136,6 +156,30 @@ theme_override_font_sizes/normal_font_size = 30
 text = "Score:"
 scroll_active = false
 
+[node name="CorrectGuessPauseTimer" type="Timer" parent="Game"]
+wait_time = 3.0
+one_shot = true
+
+[node name="FMODAndAudio" type="Node2D" parent="."]
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="FMODAndAudio"]
+bank_paths = ["res://assets/fmodproj/Build/Desktop/Master.strings.bank", "res://assets/fmodproj/Build/Desktop/Master.bank"]
+
+[node name="FmodMusic" type="FmodEventEmitter2D" parent="FMODAndAudio" groups=["FmodAudioPlayer"]]
+event_name = "event:/Music"
+event_guid = "{79c4eb97-251d-49c1-8d44-8b18a81a6619}"
+autoplay = true
+fmod_parameters/LeaveIntroLoop/id = -5667652807413369816
+fmod_parameters/LeaveIntroLoop = 0.0
+fmod_parameters/LeaveIntroLoop/variant_type = 2
+
+[node name="FmodListener2D" type="FmodListener2D" parent="FMODAndAudio"]
+position = Vector2(320, 180)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="FMODAndAudio"]
+position = Vector2(320, 180)
+
+[connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]
 [connection signal="input_event" from="Game/GameArea" to="Game" method="_on_game_area_input_event"]
 [connection signal="body_entered" from="Game/WrapEdges/BottomEdge" to="Game/WrapEdges/BottomEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/TopEdge" to="Game/WrapEdges/TopEdge" method="_on_body_entered"]

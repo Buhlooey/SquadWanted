@@ -1,11 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://c27lca7s0qdm0"]
+[gd_scene load_steps=8 format=3 uid="uid://c27lca7s0qdm0"]
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_d3ht4"]
 [ext_resource type="Texture2D" uid="uid://by4hf3njipr4k" path="res://assets/icon.svg" id="2_8lhb7"]
+[ext_resource type="AudioStream" uid="uid://rncqe3ugr7tx" path="res://assets/sound/Bruh.mp3" id="3_chaxb"]
+[ext_resource type="AudioStream" uid="uid://der8jok7bsub1" path="res://assets/sound/aeugh.mp3" id="4_3x7l4"]
+[ext_resource type="AudioStream" uid="uid://du4de734ilbk3" path="res://assets/sound/buhlooey jumpscare scream.wav" id="5_khmx3"]
+[ext_resource type="AudioStream" uid="uid://dw3haogd8tvbx" path="res://assets/sound/Tyler1 HELP HEEEELLLLPPP.mp3" id="6_rcufd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tt44h"]
 resource_local_to_scene = true
-radius = 32.0
+radius = 24.0
 
 [node name="Face" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
@@ -13,8 +17,24 @@ script = ExtResource("1_d3ht4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.447059, 0.419608, 1)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.375, 0.375)
 texture = ExtResource("2_8lhb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tt44h")
+
+[node name="CorrectAudio" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="CorrectAudio"]
+stream = ExtResource("5_khmx3")
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="CorrectAudio"]
+stream = ExtResource("6_rcufd")
+
+[node name="IncorrectAudio" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="IncorrectAudio"]
+stream = ExtResource("3_chaxb")
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="IncorrectAudio"]
+stream = ExtResource("4_3x7l4")
