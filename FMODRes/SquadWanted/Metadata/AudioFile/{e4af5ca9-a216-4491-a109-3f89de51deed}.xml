@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{e4af5ca9-a216-4491-a109-3f89de51deed}">
+		<property name="assetPath">
+			<value>Wanted Bass Full Section 1.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>29.675102040816327</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{60bc40ab-ac1b-4458-9cd4-d98dc6cfc853}</destination>
+		</relationship>
+	</object>
+</objects>

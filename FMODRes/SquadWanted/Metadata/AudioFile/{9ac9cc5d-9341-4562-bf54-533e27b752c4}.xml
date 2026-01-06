@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{9ac9cc5d-9341-4562-bf54-533e27b752c4}">
+		<property name="assetPath">
+			<value>Wanted Brass Fill.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.9706122448979593</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{60bc40ab-ac1b-4458-9cd4-d98dc6cfc853}</destination>
+		</relationship>
+	</object>
+</objects>
