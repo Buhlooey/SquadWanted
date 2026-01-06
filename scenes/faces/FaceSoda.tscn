@@ -1,18 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://bex4orc05nv4e"]
+[gd_scene load_steps=5 format=3 uid="uid://bex4orc05nv4e"]
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_uui13"]
 [ext_resource type="Texture2D" uid="uid://d2j8m8bt12c7y" path="res://assets/images/faces/FaceSoda.png" id="2_uui13"]
+[ext_resource type="Texture2D" uid="uid://bw6m7ahgmbsfx" path="res://assets/images/EyesSoda.png" id="3_f06xa"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
-radius = 24.0
+radius = 36.0
 
 [node name="FaceSoda" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
 script = ExtResource("1_uui13")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
+scale = Vector2(3, 3)
 texture = ExtResource("2_uui13")
+
+[node name="Eyes" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("3_f06xa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ounrp")

@@ -9,11 +9,11 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var correctAudios: Array = $CorrectAudio.get_children()
 @onready var incorrectAudios: Array = $IncorrectAudio.get_children()
-
+@onready var eyesSprite: Sprite2D = $Eyes
 var spriteSize: int = 48
 
 func _ready():
-	pass
+	eyesSprite.set_visible(false)
 
 
 func _physics_process(delta) -> void:
@@ -48,6 +48,7 @@ func clickFace():
 		doGravity = false
 		velocity = Vector2(0,0)
 		correctAudios[randi_range(0, correctAudios.size()-1)].play()
+		eyesSprite.set_visible(true)
 	elif !incorrectAudios.is_empty():
 		incorrectAudios[randi_range(0, incorrectAudios.size()-1)].play()
 

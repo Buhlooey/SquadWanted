@@ -1,18 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://b55n7mu1ll884"]
+[gd_scene load_steps=5 format=3 uid="uid://b55n7mu1ll884"]
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_kbmm8"]
 [ext_resource type="Texture2D" uid="uid://ba2tqlte2otrh" path="res://assets/images/faces/FaceDyl.png" id="2_kbmm8"]
+[ext_resource type="Texture2D" uid="uid://c45dqj4oow5tx" path="res://assets/images/EyesDyl.png" id="3_ncct8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
-radius = 24.0
+radius = 36.0
 
 [node name="FaceDyl" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
 script = ExtResource("1_kbmm8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
+scale = Vector2(3, 3)
 texture = ExtResource("2_kbmm8")
+
+[node name="Eyes" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("3_ncct8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ounrp")
