@@ -21,6 +21,8 @@ var moveAngle: float = INVALID_ANGLE
 @export var doGravity: bool
 @export var doBounceOnEdges: bool
 
+@export var initialWaitTime: int = 30
+
 # ~~~~~ Faces ~~~~~
 var faceSet1: Array[PackedScene] = [
 	preload('res://scenes/faces/FaceAlex.tscn'),
@@ -42,8 +44,15 @@ var gameArea: Rect2
 @onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
 @onready var gameTimer: Timer = $GameTimer
 
+@onready var correctClickSoundPlayer: AudioStreamPlayer = $CorrectClickSound
+@onready var incorrectClickSoundPlayer: AudioStreamPlayer = $IncorrectClickSound
+
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
+
+
+# ~~~~~ Signals ~~~~~
+signal gameCompleted()
 
 
 # ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
@@ -117,11 +126,8 @@ func initializeRound():
 							moveVelocity,
 							randomizeAngleIfApplicable())
 
-	set_visible(true)
-	if gameTimer.is_paused():
-		gameTimer.set_paused(false)
-	else:
-		gameTimer.start()
+	gameTimer.set_paused(false)
+	gameTimer.start()
 
 	currFaceSet.append(currWantedFace)
 
@@ -142,6 +148,16 @@ func initializeFace(scene: PackedScene, facePosition: Vector2, isWanted = false,
 func reinitializeRound() -> void:
 	clearFaces()
 	initializeRound()
+
+func startGame():
+	gameTimer.set_wait_time(initialWaitTime)
+	initializeRound()
+	set_visible(true)
+
+
+func closeGame() -> void:
+	clearFaces()
+	set_visible(false)
 
 
 # ~~~~~ Helpers ~~~~~
@@ -194,10 +210,10 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 				for body in bodies:
 					var thisFace: Node2D = instance_from_id(body["collider_id"])
 					if thisFace and thisFace.is_in_group("CorrectFace"):
-						print(gameTimer.get_time_left())
 						gameTimer.set_wait_time(gameTimer.get_time_left() + 5)
 						gameTimer.set_paused(true)
 						thisFace.clickFace()
+						correctClickSoundPlayer.play()
 						correctFaceFound = true
 						incrementScore()
 						clearFaces(true)
@@ -211,7 +227,22 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 
 				if !correctFaceFound:
 					print("Incorrect face clicked")
+					var timeLeft: float = gameTimer.get_time_left() - 3.0
+					if timeLeft < 0:
+						gameTimer.stop()
+						gameTimer.timeout.emit()
+					else:
+						gameTimer.start(timeLeft)
 					var firstIncorrectFace: Node2D = instance_from_id(bodies[0]["collider_id"])
 					firstIncorrectFace.clickFace()
+					incorrectClickSoundPlayer.play()
 
 		viewport.set_input_as_handled()
+
+
+func _on_game_timer_timeout() -> void:
+	correctGuessPauseTimer.start()
+	clearFaces(true)
+	await correctGuessPauseTimer.timeout
+	closeGame()
+	gameCompleted.emit()

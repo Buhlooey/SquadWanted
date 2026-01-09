@@ -1,11 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1gx5xkjckbnj"]
+[gd_scene load_steps=17 format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
 [ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/BGBrick.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
+[ext_resource type="AudioStream" uid="uid://csmti1o5gsbf0" path="res://assets/sound/CorrectGuess.wav" id="7_jlsqs"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
+[ext_resource type="AudioStream" uid="uid://dgt3mykihue67" path="res://assets/sound/IncorrectGuess.wav" id="8_q8u5g"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -22,16 +24,16 @@ friction = 0.0
 bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nxtc6"]
-size = Vector2(608, 2)
+size = Vector2(768, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jlsqs"]
-size = Vector2(608, 2)
+size = Vector2(768, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q8u5g"]
-size = Vector2(2, 488)
+size = Vector2(80, 648)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c01mt"]
-size = Vector2(2, 488)
+size = Vector2(80, 648)
 
 [node name="Main" type="Node2D"]
 
@@ -72,6 +74,7 @@ text = "SQUANTED!!!!!!!!!"
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 faces = 80
+moveVelocity = 100
 
 [node name="GameArea" type="Area2D" parent="Game"]
 collision_mask = 2
@@ -94,6 +97,7 @@ collision_mask = 2
 script = ExtResource("5_nxtc6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/BottomEdge"]
+position = Vector2(0, 39)
 shape = SubResource("RectangleShape2D_nxtc6")
 
 [node name="TopEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
@@ -102,6 +106,7 @@ collision_mask = 2
 script = ExtResource("5_nxtc6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/TopEdge"]
+position = Vector2(0, -39)
 shape = SubResource("RectangleShape2D_jlsqs")
 
 [node name="RightEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
@@ -110,6 +115,7 @@ collision_mask = 2
 script = ExtResource("5_nxtc6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/RightEdge"]
+position = Vector2(39, 0)
 shape = SubResource("RectangleShape2D_q8u5g")
 
 [node name="LeftEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
@@ -118,6 +124,7 @@ collision_mask = 2
 script = ExtResource("5_nxtc6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/LeftEdge"]
+position = Vector2(-39, 0)
 shape = SubResource("RectangleShape2D_c01mt")
 
 [node name="WantedBg" type="Sprite2D" parent="Game"]
@@ -192,6 +199,12 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
+[node name="CorrectClickSound" type="AudioStreamPlayer" parent="Game"]
+stream = ExtResource("7_jlsqs")
+
+[node name="IncorrectClickSound" type="AudioStreamPlayer" parent="Game"]
+stream = ExtResource("8_q8u5g")
+
 [node name="FMODAndAudio" type="Node2D" parent="."]
 
 [node name="FmodBankLoader" type="FmodBankLoader" parent="FMODAndAudio"]
@@ -217,3 +230,4 @@ position = Vector2(320, 180)
 [connection signal="body_entered" from="Game/WrapEdges/TopEdge" to="Game/WrapEdges/TopEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/RightEdge" to="Game/WrapEdges/RightEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/LeftEdge" to="Game/WrapEdges/LeftEdge" method="_on_body_entered"]
+[connection signal="timeout" from="Game/GameTimer" to="Game" method="_on_game_timer_timeout"]

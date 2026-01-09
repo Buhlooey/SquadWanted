@@ -5,5 +5,8 @@ extends Control
 
 func _on_start_button_pressed() -> void:
 	set_visible(false)
-	gameNode.initializeRound()
+	gameNode.startGame()
 	fmodMusic.set_parameter("LeaveIntroLoop", 1)
+
+	await gameNode.gameCompleted
+	set_visible(true)
