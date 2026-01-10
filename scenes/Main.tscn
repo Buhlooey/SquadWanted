@@ -74,6 +74,9 @@ text = "SQUANTED!!!!!!!!!"
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 faces = 80
+placementMode = 1
+gridHeight = 4
+gridWidth = 4
 moveVelocity = 100
 
 [node name="GameArea" type="Area2D" parent="Game"]

@@ -11,6 +11,9 @@ const INVALID_ANGLE: float = 50
 enum PlaceMode {SCATTERED, GRID, BORDER, CLUSTERS, BOUNCE}
 @export var placementMode: PlaceMode
 
+@export var gridHeight: int
+@export var gridWidth: int
+
 @export var moveVelocity: int
 @export var sameMoveDir: bool
 var moveAngle: float = INVALID_ANGLE
@@ -21,7 +24,9 @@ var moveAngle: float = INVALID_ANGLE
 @export var doGravity: bool
 @export var doBounceOnEdges: bool
 
-@export var initialWaitTime: int = 30
+@export var initialWaitTime: int = 3000
+
+var spriteSize: int = 72
 
 # ~~~~~ Faces ~~~~~
 var faceSet1: Array[PackedScene] = [
@@ -83,7 +88,24 @@ func initializeRound():
 	
 	# Place faces
 	if placementMode == PlaceMode.GRID:
-		pass # place faces on a grid
+		var xMidpointIndex: float = float(gridWidth-1)/2.0
+		var yMidpointIndex: float = float(gridHeight-1)/2.0
+		var wantedFaceX: int = randi_range(0, gridWidth-1)
+		var wantedFaceY: int = randi_range(0, gridHeight-1)
+		for x in range(gridWidth):
+			var xPos: int = spriteSize * float(x - xMidpointIndex)
+			for y in range(gridHeight):
+				var yPos: int = spriteSize * float(y - yMidpointIndex)
+
+				var face: PackedScene
+				var wanted: bool = false
+				if x == wantedFaceX and y == wantedFaceY:
+					face = currWantedFace
+					wanted = true
+				else:
+					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+
+				initializeFace(face, Vector2(xPos, yPos), wanted)
 
 	elif placementMode == PlaceMode.BORDER:
 		pass # choose one edge, place faces on it
