@@ -73,11 +73,12 @@ text = "SQUANTED!!!!!!!!!"
 [node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
-faces = 80
-placementMode = 1
-gridHeight = 4
-gridWidth = 4
+faces = 200
+placementMode = 2
+gridWidth = 10
+gridHeight = 8
 moveVelocity = 100
+initialWaitTime = 30
 
 [node name="GameArea" type="Area2D" parent="Game"]
 collision_mask = 2
@@ -204,27 +205,33 @@ one_shot = true
 
 [node name="CorrectClickSound" type="AudioStreamPlayer" parent="Game"]
 stream = ExtResource("7_jlsqs")
+volume_db = -6.0
 
 [node name="IncorrectClickSound" type="AudioStreamPlayer" parent="Game"]
 stream = ExtResource("8_q8u5g")
+volume_db = -6.0
 
-[node name="FMODAndAudio" type="Node2D" parent="."]
+[node name="FmodAndAudio" type="Node2D" parent="Game"]
+position = Vector2(-400, -180)
 
-[node name="FmodBankLoader" type="FmodBankLoader" parent="FMODAndAudio"]
+[node name="FmodBankLoader" type="FmodBankLoader" parent="Game/FmodAndAudio"]
 bank_paths = ["res://assets/fmodproj/Build/Desktop/Master.strings.bank", "res://assets/fmodproj/Build/Desktop/Master.bank"]
 
-[node name="FmodMusic" type="FmodEventEmitter2D" parent="FMODAndAudio" groups=["FmodAudioPlayer"]]
+[node name="FmodMusic" type="FmodEventEmitter2D" parent="Game/FmodAndAudio" groups=["FmodAudioPlayer"]]
 event_name = "event:/Music"
 event_guid = "{79c4eb97-251d-49c1-8d44-8b18a81a6619}"
-autoplay = true
+volume = 0.3
 fmod_parameters/LeaveIntroLoop/id = -5667652807413369816
 fmod_parameters/LeaveIntroLoop = 0.0
 fmod_parameters/LeaveIntroLoop/variant_type = 2
+fmod_parameters/PlayGameOver/id = -1373046688063544679
+fmod_parameters/PlayGameOver = 0.0
+fmod_parameters/PlayGameOver/variant_type = 2
 
-[node name="FmodListener2D" type="FmodListener2D" parent="FMODAndAudio"]
+[node name="FmodListener2D" type="FmodListener2D" parent="Game/FmodAndAudio"]
 position = Vector2(320, 180)
 
-[node name="AudioListener2D" type="AudioListener2D" parent="FMODAndAudio"]
+[node name="AudioListener2D" type="AudioListener2D" parent="Game/FmodAndAudio"]
 position = Vector2(320, 180)
 
 [connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]

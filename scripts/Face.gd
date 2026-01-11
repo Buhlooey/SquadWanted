@@ -9,6 +9,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var correctAudios: Array = $CorrectAudio.get_children()
 @onready var incorrectAudios: Array = $IncorrectAudio.get_children()
+@onready var notFoundAudio: AudioStreamPlayer2D = $NotFoundAudioPlayer
 @onready var eyesSprite: Sprite2D = $Eyes
 var spriteSize: int = 72
 
@@ -51,6 +52,10 @@ func clickFace():
 		eyesSprite.set_visible(true)
 	elif !incorrectAudios.is_empty():
 		incorrectAudios[randi_range(0, incorrectAudios.size()-1)].play()
+
+func onNotFound():
+	notFoundAudio.play()
+	# set_velocity(Vector2(0,0))
 
 ## OLD SCREENWRAP
 # func screenWrap() -> void:

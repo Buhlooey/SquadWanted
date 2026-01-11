@@ -2,7 +2,13 @@ extends Node2D
 
 const INVALID_ANGLE: float = 50
 
-# ~~~~~~~~~~~~~~~ VARIABLES ~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ VARIABLES/INITIALIZATION ~~~~~~~~~~~~~~~
+
+const SPRITE_SIZE: int = 48
+const BORDER_SPAWN_WIDTH: int = 10
+const BORDER_SPAWN_HEIGHT: int = 8
+const GRID_WIDTH_LIMIT: int = 11
+const GRID_HEIGHT_LIMIT: int = 9
 
 # ~~~~~ Game Rules ~~~~~
 ## The number of incorrect faces generated alongside the correct face.
@@ -11,8 +17,8 @@ const INVALID_ANGLE: float = 50
 enum PlaceMode {SCATTERED, GRID, BORDER, CLUSTERS, BOUNCE}
 @export var placementMode: PlaceMode
 
-@export var gridHeight: int
 @export var gridWidth: int
+@export var gridHeight: int
 
 @export var moveVelocity: int
 @export var sameMoveDir: bool
@@ -26,7 +32,7 @@ var moveAngle: float = INVALID_ANGLE
 
 @export var initialWaitTime: int = 3000
 
-var spriteSize: int = 72
+var canClick: bool = true
 
 # ~~~~~ Faces ~~~~~
 var faceSet1: Array[PackedScene] = [
@@ -52,6 +58,8 @@ var gameArea: Rect2
 @onready var correctClickSoundPlayer: AudioStreamPlayer = $CorrectClickSound
 @onready var incorrectClickSoundPlayer: AudioStreamPlayer = $IncorrectClickSound
 
+@onready var musicPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodMusic
+
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
 
@@ -65,6 +73,7 @@ signal gameCompleted()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_visible(false)
+	musicPlayer.play()
 
 	for face in faceSet1:
 		currFaceSet.append(face)
@@ -75,6 +84,7 @@ func _process(_delta: float):
 
 
 func initializeRound():
+	canClick = true
 	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	# Enable/disable bouncing
@@ -88,14 +98,18 @@ func initializeRound():
 	
 	# Place faces
 	if placementMode == PlaceMode.GRID:
+		gridWidth = min(gridWidth, GRID_WIDTH_LIMIT)
+		gridHeight = min(gridHeight, GRID_HEIGHT_LIMIT)
+
 		var xMidpointIndex: float = float(gridWidth-1)/2.0
 		var yMidpointIndex: float = float(gridHeight-1)/2.0
 		var wantedFaceX: int = randi_range(0, gridWidth-1)
 		var wantedFaceY: int = randi_range(0, gridHeight-1)
+
 		for x in range(gridWidth):
-			var xPos: int = spriteSize * float(x - xMidpointIndex)
+			var xPos: int = SPRITE_SIZE * float(x - xMidpointIndex)
 			for y in range(gridHeight):
-				var yPos: int = spriteSize * float(y - yMidpointIndex)
+				var yPos: int = SPRITE_SIZE * float(y - yMidpointIndex)
 
 				var face: PackedScene
 				var wanted: bool = false
@@ -108,7 +122,48 @@ func initializeRound():
 				initializeFace(face, Vector2(xPos, yPos), wanted)
 
 	elif placementMode == PlaceMode.BORDER:
-		pass # choose one edge, place faces on it
+		var borderToUse: int = randi_range(0,3) # 0=top, 1=bottom, 2=left, 3=right
+
+		if borderToUse <= 1: # top or bottom
+			var yPos: float
+			if borderToUse == 0:
+				yPos = gameArea.position.y
+			else:
+				yPos = gameArea.end.y
+			var midpointIndex: float = float(BORDER_SPAWN_WIDTH-1)/2.0
+			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_WIDTH-1)
+			for x in range(BORDER_SPAWN_WIDTH):
+				var xPos: int = SPRITE_SIZE * float(x - midpointIndex)
+				var face: PackedScene
+				var wanted: bool = false
+				if x == wantedFaceIndex:
+					face = currWantedFace
+					wanted = true
+				else:
+					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+
+				initializeFace(face, Vector2(xPos, yPos), wanted)
+		
+		else: # left or right
+			var xPos: float
+			if borderToUse == 2:
+				xPos = gameArea.position.x
+			else:
+				xPos = gameArea.end.x
+			var midpointIndex: float = float(BORDER_SPAWN_HEIGHT-1)/2.0
+			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_HEIGHT-1)
+			for y in range(BORDER_SPAWN_WIDTH):
+				var yPos: int = SPRITE_SIZE * float(y - midpointIndex)
+				var face: PackedScene
+				var wanted: bool = false
+				if y == wantedFaceIndex:
+					face = currWantedFace
+					wanted = true
+				else:
+					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+
+				initializeFace(face, Vector2(xPos, yPos), wanted)
+		
 
 	elif placementMode == PlaceMode.CLUSTERS:
 		pass # create a set number of clusters, then add faces as children of those clusters
@@ -180,6 +235,7 @@ func startGame():
 func closeGame() -> void:
 	clearFaces()
 	set_visible(false)
+	score = 0
 
 
 # ~~~~~ Helpers ~~~~~
@@ -221,7 +277,7 @@ func clearFaces(onlyIncorrect: bool = false):
 
 func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) -> void:
 	if event.is_action_pressed("click"):
-		if correctGuessPauseTimer.is_stopped():
+		if canClick:
 			var query = PhysicsPointQueryParameters2D.new()
 			query.set_position(viewport.get_mouse_position())
 			query.set_collide_with_areas(false)
@@ -232,7 +288,8 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 				for body in bodies:
 					var thisFace: Node2D = instance_from_id(body["collider_id"])
 					if thisFace and thisFace.is_in_group("CorrectFace"):
-						gameTimer.set_wait_time(gameTimer.get_time_left() + 5)
+						canClick = false
+						gameTimer.set_wait_time(gameTimer.get_time_left() + 3)
 						gameTimer.set_paused(true)
 						thisFace.clickFace()
 						correctClickSoundPlayer.play()
@@ -240,16 +297,14 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						incrementScore()
 						clearFaces(true)
 
-
-						# moveVelocity += 20
-						faces += 2
 						correctGuessPauseTimer.start()
 						await correctGuessPauseTimer.timeout
 						reinitializeRound()
+						break
 
 				if !correctFaceFound:
 					print("Incorrect face clicked")
-					var timeLeft: float = gameTimer.get_time_left() - 3.0
+					var timeLeft: float = gameTimer.get_time_left() - 5.0
 					if timeLeft < 0:
 						gameTimer.stop()
 						gameTimer.timeout.emit()
@@ -263,8 +318,19 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 
 
 func _on_game_timer_timeout() -> void:
-	correctGuessPauseTimer.start()
+	canClick = false
 	clearFaces(true)
+	musicPlayer.set_parameter("PlayGameOver", 1)
+	musicPlayer.set_parameter("LeaveIntroLoop", 0)
+	musicPlayer.stop()
+	for child in get_children():
+		if child.is_in_group("CorrectFace"):
+			child.onNotFound()
+			await child.notFoundAudio.finished
+			break
+
+	musicPlayer.play()
+	correctGuessPauseTimer.start()
 	await correctGuessPauseTimer.timeout
 	closeGame()
 	gameCompleted.emit()
