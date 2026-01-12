@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
-[ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/BGBrick.png" id="4_c01mt"]
+[ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/images/BGBrick.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
 [ext_resource type="AudioStream" uid="uid://csmti1o5gsbf0" path="res://assets/sound/CorrectGuess.wav" id="7_jlsqs"]
