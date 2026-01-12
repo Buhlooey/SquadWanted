@@ -74,9 +74,9 @@ text = "SQUANTED!!!!!!!!!"
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 faces = 200
-placementMode = 2
-gridWidth = 10
-gridHeight = 8
+placementMode = 1
+gridWidth = 4
+gridHeight = 4
 moveVelocity = 100
 initialWaitTime = 30
 

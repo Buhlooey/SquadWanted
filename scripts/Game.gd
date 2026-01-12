@@ -235,7 +235,7 @@ func startGame():
 func closeGame() -> void:
 	clearFaces()
 	set_visible(false)
-	score = 0
+	resetScore()
 
 
 # ~~~~~ Helpers ~~~~~

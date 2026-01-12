@@ -1,0 +1,45 @@
+Alpha Build testers: Alex, Dyl, Soda, Tyflo, Pepper
+
+ALPHA BUILD 1: Functionality Testing 
+- Get and implement Alex's voicelines this mf
+- Presets for levels, which are randomly selected
+	- 2 for each placement mode
+- A set of presets for intro levels
+	- 2x2 grid, larger grids, borders, slow movements
+- Popups for time gains/losses (+3, -5)
+- Time cap (60s)
+- Parry key
+- Audio buses
+- Main menu volume control
+
+
+ALPHA BUILD 2: Gameplay and Visual Polish
+- Spotlight effects at start of each round
+- Section changes every 10 levels
+	- Difficulty scaling
+	- Variations differ between sections
+- 1 new music variation
+- City streets background
+
+ALPHA BUILD 3: More Content
+- 1-2 new sets of faces
+	- either Squad 2 mainstays: Quick, Pepper, Bluey, Neea
+	- or Squad 1 members: Kazuki, Skull, Muff, Mer
+- Section 2 has set 2, section 3 onward has two sets
+- More spotlight effects
+---
+
+Beta Build testers: All alpha build testers including:
+- Kris, Kawten, Venus (ask) ~ Critter Garden
+- Squad 2
+- Metalopods and Splatonics?
+
+Future features:
+- Settings menu, when more settings are found
+- Achievements
+- Wanted Records (name pending; logbooks for people)
+- Post-game Leaderboards
+- High score tracking
+- High score saving
+- Hard Mode
+
