@@ -1,13 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://b1gx5xkjckbnj"]
+[gd_scene load_steps=15 format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
 [ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/images/BGBrick.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
-[ext_resource type="AudioStream" uid="uid://csmti1o5gsbf0" path="res://assets/sound/CorrectGuess.wav" id="7_jlsqs"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
-[ext_resource type="AudioStream" uid="uid://dgt3mykihue67" path="res://assets/sound/IncorrectGuess.wav" id="8_q8u5g"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -73,12 +71,11 @@ text = "SQUANTED!!!!!!!!!"
 [node name="Game" type="Node2D" parent="." groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
-faces = 200
 placementMode = 1
-gridWidth = 4
-gridHeight = 4
+faces = 200
+gridWidth = 8
+gridHeight = 8
 moveVelocity = 100
-initialWaitTime = 30
 
 [node name="GameArea" type="Area2D" parent="Game"]
 collision_mask = 2
@@ -203,14 +200,6 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
-[node name="CorrectClickSound" type="AudioStreamPlayer" parent="Game"]
-stream = ExtResource("7_jlsqs")
-volume_db = -6.0
-
-[node name="IncorrectClickSound" type="AudioStreamPlayer" parent="Game"]
-stream = ExtResource("8_q8u5g")
-volume_db = -6.0
-
 [node name="FmodAndAudio" type="Node2D" parent="Game"]
 position = Vector2(-400, -180)
 
@@ -229,9 +218,6 @@ fmod_parameters/PlayGameOver = 0.0
 fmod_parameters/PlayGameOver/variant_type = 2
 
 [node name="FmodListener2D" type="FmodListener2D" parent="Game/FmodAndAudio"]
-position = Vector2(320, 180)
-
-[node name="AudioListener2D" type="AudioListener2D" parent="Game/FmodAndAudio"]
 position = Vector2(320, 180)
 
 [connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]

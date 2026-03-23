@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+@export var faceName: String
+
+var textures: Array
+
 var gameNode: Node2D
 
 var isWanted: bool
@@ -7,14 +11,17 @@ var isWanted: bool
 var doGravity: bool = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-@onready var correctAudios: Array = $CorrectAudio.get_children()
-@onready var incorrectAudios: Array = $IncorrectAudio.get_children()
-@onready var notFoundAudio: AudioStreamPlayer2D = $NotFoundAudioPlayer
+@onready var eventEmitter: FmodEventEmitter2D = $FmodEventEmitter2D
+
+@onready var sprite: Sprite2D = $Sprite2D
 @onready var eyesSprite: Sprite2D = $Eyes
 var spriteSize: int = 72
 
 func _ready():
 	eyesSprite.set_visible(false)
+	eventEmitter.set_parameter("Face", faceName)
+	sprite.set_texture(textures[0])
+	eyesSprite.set_texture(textures[1])
 
 
 func _physics_process(delta) -> void:
@@ -45,16 +52,21 @@ func screenWrap(edgeName:String) -> void:
 
 # Called by Game.gd
 func clickFace():
-	if isWanted and !correctAudios.is_empty():
+	if isWanted:
 		doGravity = false
 		velocity = Vector2(0,0)
-		correctAudios[randi_range(0, correctAudios.size()-1)].play()
+		eventEmitter.set_parameter("Event", "Found")
 		eyesSprite.set_visible(true)
-	elif !incorrectAudios.is_empty():
-		incorrectAudios[randi_range(0, incorrectAudios.size()-1)].play()
+	else:
+		eventEmitter.set_parameter("Event", "Misclick")
+	
+	eventEmitter.play()
 
+
+# Called by Game.gd
 func onNotFound():
-	notFoundAudio.play()
+	eventEmitter.set_parameter("Event", "NotFound")
+	eventEmitter.play()
 	# set_velocity(Vector2(0,0))
 
 ## OLD SCREENWRAP

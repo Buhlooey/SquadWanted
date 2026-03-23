@@ -16,10 +16,11 @@ ALPHA BUILD 1: Functionality Testing
 ALPHA BUILD 2: Gameplay and Visual Polish
 - Spotlight effects at start of each round
 - Section changes every 10 levels
-	- Difficulty scaling
-	- Variations differ between sections
+	- Difficulty scaling + parameter-difficulty script
+	- Music variations differ between sections
 - 1 new music variation
 - City streets background
+- 1 new visual environment set
 
 ALPHA BUILD 3: More Content
 - 1-2 new sets of faces
@@ -42,4 +43,3 @@ Future features:
 - High score tracking
 - High score saving
 - Hard Mode
-

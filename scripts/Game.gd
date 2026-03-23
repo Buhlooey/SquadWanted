@@ -11,12 +11,14 @@ const GRID_WIDTH_LIMIT: int = 11
 const GRID_HEIGHT_LIMIT: int = 9
 
 # ~~~~~ Game Rules ~~~~~
-## The number of incorrect faces generated alongside the correct face.
-@export var faces: int
 
 enum PlaceMode {SCATTERED, GRID, BORDER, CLUSTERS, BOUNCE}
 @export var placementMode: PlaceMode
 
+## The number of incorrect faces generated alongside the correct face. Used in Clusters, Bounce, and Scattered.
+@export var faces: int
+
+## The size of the grid. Used in Grid, Border.
 @export var gridWidth: int
 @export var gridHeight: int
 
@@ -30,19 +32,31 @@ var moveAngle: float = INVALID_ANGLE
 @export var doGravity: bool
 @export var doBounceOnEdges: bool
 
-@export var initialWaitTime: int = 3000
+@export var initialWaitTime: int = 30
 
 var canClick: bool = true
 
 # ~~~~~ Faces ~~~~~
-var faceSet1: Array[PackedScene] = [
-	preload('res://scenes/faces/FaceAlex.tscn'),
-	preload('res://scenes/faces/FaceSoda.tscn'),
-	preload('res://scenes/faces/FaceDyl.tscn'),
-	preload('res://scenes/faces/FaceTyflo.tscn'),
-]
-var currFaceSet: Array[PackedScene]
-var currWantedFace: PackedScene
+
+var faceScene: PackedScene = preload('res://scenes/Face.tscn')
+
+var faceSetImages: Dictionary[String, Array] = {
+	"Alex":		[preload('res://assets/images/faces/FaceAlex.png'),
+			 	 preload('res://assets/images/faces/EyesAlex.png')],
+	"Dyl":		[preload('res://assets/images/faces/FaceDyl.png'),
+				 preload('res://assets/images/faces/EyesDyl.png')],
+	"Soda": 	[preload('res://assets/images/faces/FaceSoda.png'),
+				 preload('res://assets/images/faces/EyesSoda.png')],
+	"Tyflo":	[preload('res://assets/images/faces/FaceTyflo.png'),
+				 preload('res://assets/images/faces/EyesTyflo.png')],
+}
+
+var currFaceSet: Array
+var currWantedFace: String
+
+# ~~~~~ Level Loading ~~~~~
+# @onready var levelLoader: Node = $LevelLoader
+
 
 # ~~~~~ Child Node References ~~~~~
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
@@ -54,9 +68,6 @@ var gameArea: Rect2
 @onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
 @onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
 @onready var gameTimer: Timer = $GameTimer
-
-@onready var correctClickSoundPlayer: AudioStreamPlayer = $CorrectClickSound
-@onready var incorrectClickSoundPlayer: AudioStreamPlayer = $IncorrectClickSound
 
 @onready var musicPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodMusic
 
@@ -75,8 +86,7 @@ func _ready():
 	set_visible(false)
 	musicPlayer.play()
 
-	for face in faceSet1:
-		currFaceSet.append(face)
+	currFaceSet = faceSetImages.keys()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
@@ -94,7 +104,7 @@ func initializeRound():
 		staticBorder.process_mode = Node.PROCESS_MODE_DISABLED
 
 	# Choose wanted face
-	currWantedFace = currFaceSet.pop_at(randi_range(0, faceSet1.size()-1))
+	currWantedFace = currFaceSet.pop_at(randi_range(0, currFaceSet.size()-1))
 	
 	# Place faces
 	if placementMode == PlaceMode.GRID:
@@ -111,15 +121,15 @@ func initializeRound():
 			for y in range(gridHeight):
 				var yPos: int = SPRITE_SIZE * float(y - yMidpointIndex)
 
-				var face: PackedScene
+				var faceName: String
 				var wanted: bool = false
 				if x == wantedFaceX and y == wantedFaceY:
-					face = currWantedFace
+					faceName = currWantedFace
 					wanted = true
 				else:
-					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(face, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted)
 
 	elif placementMode == PlaceMode.BORDER:
 		var borderToUse: int = randi_range(0,3) # 0=top, 1=bottom, 2=left, 3=right
@@ -134,15 +144,15 @@ func initializeRound():
 			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_WIDTH-1)
 			for x in range(BORDER_SPAWN_WIDTH):
 				var xPos: int = SPRITE_SIZE * float(x - midpointIndex)
-				var face: PackedScene
+				var faceName: String
 				var wanted: bool = false
 				if x == wantedFaceIndex:
-					face = currWantedFace
+					faceName = currWantedFace
 					wanted = true
 				else:
-					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(face, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted)
 		
 		else: # left or right
 			var xPos: float
@@ -154,32 +164,31 @@ func initializeRound():
 			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_HEIGHT-1)
 			for y in range(BORDER_SPAWN_WIDTH):
 				var yPos: int = SPRITE_SIZE * float(y - midpointIndex)
-				var face: PackedScene
+				var faceName: String
 				var wanted: bool = false
 				if y == wantedFaceIndex:
-					face = currWantedFace
+					faceName = currWantedFace
 					wanted = true
 				else:
-					face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(face, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted)
 		
-
-	elif placementMode == PlaceMode.CLUSTERS:
+	elif placementMode == PlaceMode.CLUSTERS: #TODO
 		pass # create a set number of clusters, then add faces as children of those clusters
 
 	elif placementMode == PlaceMode.BOUNCE:
 		# scatter faces in a row near the top of the game area so they can fall and bounce
 		for i in range(faces):
-			var face: PackedScene
+			var faceName: String
 			var wanted: bool = false
 			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
-				face = currWantedFace
+				faceName = currWantedFace
 				wanted = true
 			else:
-				face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+				faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-			initializeFace(face,
+			initializeFace(faceName,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
 							wanted,
 							moveVelocity,
@@ -188,15 +197,15 @@ func initializeRound():
 	else: # SCATTERED is default
 		# scatter faces randomly about the board
 		for i in range(faces):
-			var face: PackedScene
+			var faceName: String
 			var wanted: bool = false
 			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
-				face = currWantedFace
+				faceName = currWantedFace
 				wanted = true
 			else:
-				face = currFaceSet[randi_range(0, currFaceSet.size()-1)]
+				faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-			initializeFace(face,
+			initializeFace(faceName,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x),
 									randf_range(gameArea.position.y, gameArea.end.y)),
 							wanted,
@@ -209,8 +218,10 @@ func initializeRound():
 	currFaceSet.append(currWantedFace)
 
 
-func initializeFace(scene: PackedScene, facePosition: Vector2, isWanted = false, faceVelocity: int = 0, faceMoveAngle: float = 0) -> void:
-	var faceNode: CharacterBody2D = scene.instantiate()
+func initializeFace(faceName: String, facePosition: Vector2, isWanted = false, faceVelocity: int = 0, faceMoveAngle: float = 0) -> void:
+	var faceNode: CharacterBody2D = faceScene.instantiate()
+	faceNode.faceName = faceName
+	faceNode.textures = faceSetImages[faceName]
 	faceNode.gameNode = self
 	faceNode.set_global_position(facePosition)
 	faceNode.set_velocity(Vector2(faceVelocity*cos(faceMoveAngle), faceVelocity*sin(faceMoveAngle)))
@@ -218,7 +229,7 @@ func initializeFace(scene: PackedScene, facePosition: Vector2, isWanted = false,
 	faceNode.isWanted = isWanted
 	if isWanted:
 		faceNode.add_to_group("CorrectFace")
-		wantedIcon.set_texture(faceNode.get_child(0).texture)
+		wantedIcon.set_texture(faceSetImages[faceName][0])
 	add_child(faceNode)
 
 
@@ -226,7 +237,7 @@ func reinitializeRound() -> void:
 	clearFaces()
 	initializeRound()
 
-func startGame():
+func startGame() -> void:
 	gameTimer.set_wait_time(initialWaitTime)
 	initializeRound()
 	set_visible(true)
@@ -292,7 +303,6 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						gameTimer.set_wait_time(gameTimer.get_time_left() + 3)
 						gameTimer.set_paused(true)
 						thisFace.clickFace()
-						correctClickSoundPlayer.play()
 						correctFaceFound = true
 						incrementScore()
 						clearFaces(true)
@@ -312,7 +322,6 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						gameTimer.start(timeLeft)
 					var firstIncorrectFace: Node2D = instance_from_id(bodies[0]["collider_id"])
 					firstIncorrectFace.clickFace()
-					incorrectClickSoundPlayer.play()
 
 		viewport.set_input_as_handled()
 
@@ -326,7 +335,7 @@ func _on_game_timer_timeout() -> void:
 	for child in get_children():
 		if child.is_in_group("CorrectFace"):
 			child.onNotFound()
-			await child.notFoundAudio.finished
+			await child.eventEmitter.stopped
 			break
 
 	musicPlayer.play()

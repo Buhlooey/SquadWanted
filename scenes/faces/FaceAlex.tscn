@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_0acgn"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="2_gewmr"]
-[ext_resource type="Texture2D" uid="uid://dk4x0xac04raq" path="res://assets/images/EyesAlex.png" id="3_wa4jk"]
+[ext_resource type="Texture2D" uid="uid://dk4x0xac04raq" path="res://assets/images/faces/EyesAlex.png" id="3_wa4jk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
 radius = 24.0
@@ -10,6 +10,7 @@ radius = 24.0
 [node name="FaceAlex" type="CharacterBody2D" groups=["Face"]]
 collision_layer = 2
 script = ExtResource("1_0acgn")
+faceName = "Alex"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(2, 2)
@@ -22,16 +23,14 @@ texture = ExtResource("3_wa4jk")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ounrp")
 
-[node name="CorrectAudio" type="Node2D" parent="."]
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="CorrectAudio"]
-
-[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="CorrectAudio"]
-
-[node name="IncorrectAudio" type="Node2D" parent="."]
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="IncorrectAudio"]
-
-[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="IncorrectAudio"]
-
-[node name="NotFoundAudioPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
+event_name = "event:/Voicelines"
+event_guid = "{90005da6-8ede-4d59-84de-f7e415315d28}"
+fmod_parameters/Face/id = -6653342042967358386
+fmod_parameters/Face = "Alex"
+fmod_parameters/Face/labels = PackedStringArray("Alex", "Dyl", "Soda", "Tyflo")
+fmod_parameters/Face/variant_type = 4
+fmod_parameters/Event/id = -5415404342882972388
+fmod_parameters/Event = "Misclick"
+fmod_parameters/Event/labels = PackedStringArray("Found", "Misclick", "NotFound")
+fmod_parameters/Event/variant_type = 4
