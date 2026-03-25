@@ -218,6 +218,7 @@ fmod_parameters/PlayGameOver = 0.0
 fmod_parameters/PlayGameOver/variant_type = 2
 
 [node name="FmodListener2D" type="FmodListener2D" parent="Game/FmodAndAudio"]
+is_locked = true
 position = Vector2(320, 180)
 
 [connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]

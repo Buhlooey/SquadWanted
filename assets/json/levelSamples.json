@@ -1,0 +1,40 @@
+{
+	"samples": [
+		{
+			"placeMode": 0,
+			"faces": 20,
+			"moveVelocity": 0,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": false
+		},
+		{
+			"placeMode": 1,
+			"gridWidth": 2,
+			"gridHeight": 2
+		},
+		{
+			"placeMode": 2,
+			"borderToUse": 0
+		},
+		{
+			"placeMode": 3,
+			"faces": 20,
+			"clusters": 4,
+			"moveVelocity": 0,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false
+		},
+		{
+			"placeMode": 4,
+			"faces": 20,
+			"moveVelocity": 5,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": true
+		}
+	]
+}

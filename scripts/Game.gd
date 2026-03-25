@@ -1,7 +1,5 @@
 extends Node2D
 
-const INVALID_ANGLE: float = 50
-
 # ~~~~~~~~~~~~~~~ VARIABLES/INITIALIZATION ~~~~~~~~~~~~~~~
 
 const SPRITE_SIZE: int = 48
@@ -9,28 +7,42 @@ const BORDER_SPAWN_WIDTH: int = 10
 const BORDER_SPAWN_HEIGHT: int = 8
 const GRID_WIDTH_LIMIT: int = 11
 const GRID_HEIGHT_LIMIT: int = 9
+const INVALID_ANGLE: float = 50
 
 # ~~~~~ Game Rules ~~~~~
 
 enum PlaceMode {SCATTERED, GRID, BORDER, CLUSTERS, BOUNCE}
 @export var placementMode: PlaceMode
 
-## The number of incorrect faces generated alongside the correct face. Used in Clusters, Bounce, and Scattered.
+## The number of incorrect faces generated alongside the correct face. Used in: Scattered, Clusters, Bounce.
 @export var faces: int
+## The number of clusters that faces will be grouped in. Faces will be mostly uniformly distributed between clusters. Used in: Clusters.
+@export var clusters: int
 
-## The size of the grid. Used in Grid, Border.
+## The horizontal size of the grid where faces spawn. Used in: Grid.
 @export var gridWidth: int
+## The vertical size of the grid where faces spawn. Used in: Grid.
 @export var gridHeight: int
 
+## The border of the screen to use; 0=top, 1=bottom, 2=left, 3=right. Used in: Border.
+@export var borderToUse: int = -1
+
+## The velocity faces will move in. Used in: Scattered, Clusters, Bounce.
 @export var moveVelocity: int
+## Whether the same random moveAngle will be given to every face, or each face/cluster will get a random moveAngle. Used in: Scattered, Clusters, Bounce.
 @export var sameMoveDir: bool
 var moveAngle: float = INVALID_ANGLE
 
-@export var doWaveMovementX: bool # TODO: Implement wave movement
+# TODO: Implement wave movement
+## Whether or not faces will move horizontally in a sine wave. Used in: Scattered, Clusters.
+@export var doWaveMovementX: bool
+## Whether or not faces will move vertically in a sine wave. Used in: Scattered, Clusters.
 @export var doWaveMovementY: bool
 
-@export var doGravity: bool
+## Whether or not faces will bounce off of the edge of the screen or loop to the other side of it. Used in: Scattered, Bounce.
 @export var doBounceOnEdges: bool
+
+
 
 @export var initialWaitTime: int = 30
 
@@ -55,8 +67,8 @@ var currFaceSet: Array
 var currWantedFace: String
 
 # ~~~~~ Level Loading ~~~~~
-# @onready var levelLoader: Node = $LevelLoader
-
+var levelsFilePath: String = "res://assets/json/levels.json"
+@onready var levelsJson: Dictionary = loadJson(levelsFilePath)
 
 # ~~~~~ Child Node References ~~~~~
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
@@ -83,6 +95,7 @@ signal gameCompleted()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print(levelsJson)
 	set_visible(false)
 	musicPlayer.play()
 
@@ -94,7 +107,7 @@ func _process(_delta: float):
 
 
 func initializeRound():
-	canClick = true
+	loadLevelPreset("section1")
 	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	# Enable/disable bouncing
@@ -117,9 +130,9 @@ func initializeRound():
 		var wantedFaceY: int = randi_range(0, gridHeight-1)
 
 		for x in range(gridWidth):
-			var xPos: int = SPRITE_SIZE * float(x - xMidpointIndex)
+			var xPos: int = int(SPRITE_SIZE * float(x - xMidpointIndex))
 			for y in range(gridHeight):
-				var yPos: int = SPRITE_SIZE * float(y - yMidpointIndex)
+				var yPos: int = int(SPRITE_SIZE * float(y - yMidpointIndex))
 
 				var faceName: String
 				var wanted: bool = false
@@ -132,7 +145,8 @@ func initializeRound():
 				initializeFace(faceName, Vector2(xPos, yPos), wanted)
 
 	elif placementMode == PlaceMode.BORDER:
-		var borderToUse: int = randi_range(0,3) # 0=top, 1=bottom, 2=left, 3=right
+		if borderToUse < 0 or borderToUse > 3:
+			borderToUse = randi_range(0,3) # 0=top, 1=bottom, 2=left, 3=right
 
 		if borderToUse <= 1: # top or bottom
 			var yPos: float
@@ -143,7 +157,7 @@ func initializeRound():
 			var midpointIndex: float = float(BORDER_SPAWN_WIDTH-1)/2.0
 			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_WIDTH-1)
 			for x in range(BORDER_SPAWN_WIDTH):
-				var xPos: int = SPRITE_SIZE * float(x - midpointIndex)
+				var xPos: int = int(SPRITE_SIZE * float(x - midpointIndex))
 				var faceName: String
 				var wanted: bool = false
 				if x == wantedFaceIndex:
@@ -163,7 +177,7 @@ func initializeRound():
 			var midpointIndex: float = float(BORDER_SPAWN_HEIGHT-1)/2.0
 			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_HEIGHT-1)
 			for y in range(BORDER_SPAWN_WIDTH):
-				var yPos: int = SPRITE_SIZE * float(y - midpointIndex)
+				var yPos: int = int(SPRITE_SIZE * float(y - midpointIndex))
 				var faceName: String
 				var wanted: bool = false
 				if y == wantedFaceIndex:
@@ -182,7 +196,7 @@ func initializeRound():
 		for i in range(faces):
 			var faceName: String
 			var wanted: bool = false
-			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
+			if i == floor(float(faces)/2): # The (i/2)th face spawned will be the wanted face
 				faceName = currWantedFace
 				wanted = true
 			else:
@@ -192,14 +206,15 @@ func initializeRound():
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
 							wanted,
 							moveVelocity,
-							randomizeAngleIfApplicable())
+							randomizeAngleIfApplicable(),
+							true)
 
 	else: # SCATTERED is default
 		# scatter faces randomly about the board
 		for i in range(faces):
 			var faceName: String
 			var wanted: bool = false
-			if i == floor(faces/2): # The (i/2)th face spawned will be the wanted face
+			if i == floor(float(faces)/2): # The (i/2)th face spawned will be the wanted face
 				faceName = currWantedFace
 				wanted = true
 			else:
@@ -217,8 +232,10 @@ func initializeRound():
 
 	currFaceSet.append(currWantedFace)
 
+	canClick = true
 
-func initializeFace(faceName: String, facePosition: Vector2, isWanted = false, faceVelocity: int = 0, faceMoveAngle: float = 0) -> void:
+
+func initializeFace(faceName: String, facePosition: Vector2, isWanted, faceVelocity: int = 0, faceMoveAngle: float = 0, doGravity: bool = false) -> void:
 	var faceNode: CharacterBody2D = faceScene.instantiate()
 	faceNode.faceName = faceName
 	faceNode.textures = faceSetImages[faceName]
@@ -283,6 +300,69 @@ func clearFaces(onlyIncorrect: bool = false):
 			if !child.is_in_group("CorrectFace") or !onlyIncorrect:
 				child.queue_free()
 
+
+# ~~~~~ Level Loading ~~~~~
+
+func loadJson(path: String) -> Dictionary:
+	if !FileAccess.file_exists(path):
+		push_error("File ", path, " doesn't exist")
+		return {}
+	
+	var json: JSON = JSON.new()
+	
+	var dataFile: FileAccess = FileAccess.open(path, FileAccess.READ)
+	var jsonString: String = dataFile.get_as_text()
+	var error: int = json.parse(jsonString)
+
+	if error:
+		push_error("JSON Parse Error: ", json.get_error_message(), " in ", jsonString, " at line ", json.get_error_line())
+		return {}
+		
+	var parsedData: Dictionary = JSON.parse_string(jsonString)
+	return parsedData
+
+func loadLevelPreset(presetName: String, index: int = -1) -> void:
+	var levelSet: Array = levelsJson[presetName]
+	if index < 0 or index > levelSet.size():
+		# If index to pick a level is outside the range of the level set, pick a random level
+		if index != -1:
+			push_warning("Index {index} out of range for this level set (size {levelSet.size()}). Choosing a random level.".format([index, levelSet.size()]))
+		index = randi_range(0, levelSet.size()-1)
+
+	var level: Dictionary = levelSet[index]
+	placementMode = int(level["placeMode"]) as PlaceMode
+
+	print("placementMode: ", placementMode)
+
+	if placementMode == PlaceMode.SCATTERED:
+		faces = level["faces"]
+		moveVelocity = level["moveVelocity"]
+		sameMoveDir = level["sameMoveDir"]
+		doWaveMovementX = level["doWaveMovementX"]
+		doWaveMovementY = level["doWaveMovementY"]
+		doBounceOnEdges = level["doBounceOnEdges"]
+	elif placementMode == PlaceMode.GRID:
+		gridWidth = level["gridWidth"]
+		gridHeight = level["gridHeight"]
+		doBounceOnEdges = false
+	elif placementMode == PlaceMode.BORDER:
+		borderToUse = level["borderToUse"]
+		doBounceOnEdges = false
+	elif placementMode == PlaceMode.CLUSTERS:
+		faces = level["faces"]
+		clusters = level["clusters"]
+		moveVelocity = level["moveVelocity"]
+		sameMoveDir = level["sameMoveDir"]
+		doWaveMovementX = level["doWaveMovementX"]
+		doWaveMovementY = level["doWaveMovementY"]
+		doBounceOnEdges = false
+	elif placementMode == PlaceMode.BOUNCE:
+		faces = level["faces"]
+		moveVelocity = level["moveVelocity"]
+		sameMoveDir = level["sameMoveDir"]
+		doWaveMovementX = level["doWaveMovementX"]
+		doWaveMovementY = level["doWaveMovementY"]
+		doBounceOnEdges = level["doBounceOnEdges"]
 
 # ~~~~~ Signals ~~~~~
 

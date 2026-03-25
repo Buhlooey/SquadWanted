@@ -1,0 +1,82 @@
+{
+	"intro": [
+		{
+			"placeMode": 0,
+			"faces": 20,
+			"moveVelocity": 0,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": false
+		},
+		{
+			"placeMode": 1,
+			"gridWidth": 2,
+			"gridHeight": 2
+		},
+		{
+			"placeMode": 2,
+			"borderToUse": 1
+		},
+		{
+			"placeMode": 4,
+			"faces": 20,
+			"moveVelocity": 100,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": true
+		}
+	],
+	"section1": [
+		{
+			"placeMode": 0,
+			"faces": 100,
+			"moveVelocity": 0,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": false
+		},
+		{
+			"placeMode": 0,
+			"faces": 50,
+			"moveVelocity": 80,
+			"sameMoveDir": true,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": false
+		},
+		{
+			"placeMode": 0,
+			"faces": 50,
+			"moveVelocity": 40,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": false
+		},
+		{
+			"placeMode": 1,
+			"gridWidth": 5,
+			"gridHeight": 5
+		},
+		{
+			"placeMode": 2,
+			"borderToUse": 1
+		},
+		{
+			"placeMode": 2,
+			"borderToUse": 0
+		},
+		{
+			"placeMode": 4,
+			"faces": 20,
+			"moveVelocity": 300,
+			"sameMoveDir": false,
+			"doWaveMovementX": false,
+			"doWaveMovementY": false,
+			"doBounceOnEdges": true
+		}
+	]
+}

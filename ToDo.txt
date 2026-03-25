@@ -12,7 +12,6 @@ ALPHA BUILD 1: Functionality Testing
 - Audio buses
 - Main menu volume control
 
-
 ALPHA BUILD 2: Gameplay and Visual Polish
 - Spotlight effects at start of each round
 - Section changes every 10 levels
@@ -28,6 +27,7 @@ ALPHA BUILD 3: More Content
 	- or Squad 1 members: Kazuki, Skull, Muff, Mer
 - Section 2 has set 2, section 3 onward has two sets
 - More spotlight effects
+
 ---
 
 Beta Build testers: All alpha build testers including:
@@ -43,3 +43,6 @@ Future features:
 - High score tracking
 - High score saving
 - Hard Mode
+
+Environments:
+- Science facility with a monitor that says "DANGER"
