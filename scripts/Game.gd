@@ -43,10 +43,11 @@ var moveAngle: float = INVALID_ANGLE
 @export var doBounceOnEdges: bool
 
 
-
-@export var initialWaitTime: int = 30
+@export var initialWaitTime: int = 15
 
 var canClick: bool = true
+
+var timePopupScene: PackedScene = preload('res://scenes/TimePopup.tscn')
 
 # ~~~~~ Faces ~~~~~
 
@@ -68,14 +69,16 @@ var currWantedFace: String
 
 # ~~~~~ Level Loading ~~~~~
 var levelsFilePath: String = "res://assets/json/levels.json"
-@onready var levelsJson: Dictionary = loadJson(levelsFilePath)
+var currSection: Dictionary
+@onready var gameJson: Dictionary = loadJson(levelsFilePath)
+var sequentialLevelIndex: int = 0
 
 # ~~~~~ Child Node References ~~~~~
 @onready var gameAreaCollider: CollisionShape2D = $GameArea/CollisionShape2D
 var gameArea: Rect2
 @onready var staticBorder: StaticBody2D = $StaticBorder
 
-@onready var wantedIcon: Sprite2D = $WantedIcon
+@onready var wantedIcon: Sprite2D = $WantedVisual/WantedIcon
 @onready var timeTextLabel: RichTextLabel = $TimeAndScore/TimeText
 @onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
 @onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
@@ -85,21 +88,26 @@ var gameArea: Rect2
 
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
+var currSectionIndex: int = 0
+
+var correctBonus: float = 3.0
+var incorrectPenalty: float = 5.0
+var levelsPerSection: int = 10
 
 
 # ~~~~~ Signals ~~~~~
 signal gameCompleted()
+signal advanceRound()
 
 
 # ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(levelsJson)
 	set_visible(false)
 	musicPlayer.play()
 
-	currFaceSet = faceSetImages.keys()
+	gameJson["sections"] = gameJson["sections"]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
@@ -107,7 +115,13 @@ func _process(_delta: float):
 
 
 func initializeRound():
-	loadLevelPreset("section1")
+	if currSection.get("sequential"):
+		if sequentialLevelIndex < 0 or sequentialLevelIndex >= currSection["levels"].size():
+			sequentialLevelIndex = 0
+		loadLevelPreset(sequentialLevelIndex)
+		sequentialLevelIndex += 1
+	else:
+		loadLevelPreset()
 	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	# Enable/disable bouncing
@@ -252,9 +266,12 @@ func initializeFace(faceName: String, facePosition: Vector2, isWanted, faceVeloc
 
 func reinitializeRound() -> void:
 	clearFaces()
+	clearPopups()
 	initializeRound()
 
 func startGame() -> void:
+	sequentialLevelIndex = 0
+	startNewSection()
 	gameTimer.set_wait_time(initialWaitTime)
 	initializeRound()
 	set_visible(true)
@@ -262,6 +279,7 @@ func startGame() -> void:
 
 func closeGame() -> void:
 	clearFaces()
+	clearPopups()
 	set_visible(false)
 	resetScore()
 
@@ -300,6 +318,14 @@ func clearFaces(onlyIncorrect: bool = false):
 			if !child.is_in_group("CorrectFace") or !onlyIncorrect:
 				child.queue_free()
 
+func clearPopups():
+	for child in get_children():
+		if child.is_in_group("Popup"):
+			child.queue_free()
+
+func startNewSection(byIndex: bool = true, sectionName: String = "") -> void:
+	if byIndex: loadSectionBySequenceIndex(sequentialLevelIndex)
+	else: loadSection(sectionName)
 
 # ~~~~~ Level Loading ~~~~~
 
@@ -321,18 +347,56 @@ func loadJson(path: String) -> Dictionary:
 	var parsedData: Dictionary = JSON.parse_string(jsonString)
 	return parsedData
 
-func loadLevelPreset(presetName: String, index: int = -1) -> void:
-	var levelSet: Array = levelsJson[presetName]
-	if index < 0 or index > levelSet.size():
+func loadSection(sectionName: String) -> void:
+	if not gameJson["sections"].has(sectionName):
+		if not gameJson.has("fallbackSections"):
+			push_error("Game.loadSection(): gameJson[\"sections\"] does not have a section named ", sectionName, " and has no fallback section.")
+		else:
+			var randomSectionName: String = gameJson["fallbackSections"].pick_random()
+			push_warning("Game.loadSection(): gameJson[\"sections\"] does not have a section named ", sectionName, ". Using random fallback section ", randomSectionName, ".")
+			sectionName = randomSectionName
+	
+	print("Loading section ", sectionName)
+	currSection = gameJson["sections"][sectionName]
+	
+	if currSection.get("sequential"):
+		sequentialLevelIndex = 0
+	
+	if currSection.get("faces"):
+		if currSection["faces"].size() < 2:
+			push_warning("Game.loadSection(): Section ", sectionName, "'s face set is too small - must be >= 2. Using default face set.")
+			currFaceSet = ["Alex", "Dyl", "Soda", "Tyflo"]
+		else:
+			currFaceSet = currSection["faces"]
+	else:
+		push_warning("Game.loadSection(): Section ", sectionName, " has no face set. Using default face set.")
+		currFaceSet = ["Alex", "Dyl", "Soda", "Tyflo"]
+	
+	musicPlayer.set_parameter("Section", currSection.get("musicSection", 0))
+
+func loadSectionBySequenceIndex(sectionIndex: int) -> void:
+	if not gameJson.has("sequence"):
+		push_warning("Game.loadSectionBySequenceIndex: gameJson doesn't have a sequence. Picking a random fallback section.")
+		loadSection("_useFallback")
+	elif sectionIndex > gameJson["sequence"].size()-1:
+		push_warning("Game.loadSectionBySequenceIndex: Index ", sectionIndex, " is greater than sequence length ", gameJson["sequence"].size, ". Picking a random fallback section.")
+		loadSection("_useFallback")
+	else:
+		loadSection(gameJson["sequence"][sectionIndex])
+
+func loadLevelPreset(index: int = -1) -> void:
+	if currSection == null:
+		push_warning("loadLevelPreset: currSection is null. Set a level set first!")
+		return
+	
+	if index < 0 or index >= currSection["levels"].size():
 		# If index to pick a level is outside the range of the level set, pick a random level
 		if index != -1:
-			push_warning("Index {index} out of range for this level set (size {levelSet.size()}). Choosing a random level.".format([index, levelSet.size()]))
-		index = randi_range(0, levelSet.size()-1)
-
-	var level: Dictionary = levelSet[index]
+			push_warning("loadLevelPreset: Index {index} out of range for this level set (size {currSection[\"levels\"].size()}). Choosing a random level.".format([index, currSection["levels"].size()]))
+		index = randi_range(0, currSection["levels"].size()-1)
+	
+	var level: Dictionary = currSection["levels"][index]
 	placementMode = int(level["placeMode"]) as PlaceMode
-
-	print("placementMode: ", placementMode)
 
 	if placementMode == PlaceMode.SCATTERED:
 		faces = level["faces"]
@@ -380,36 +444,64 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 					var thisFace: Node2D = instance_from_id(body["collider_id"])
 					if thisFace and thisFace.is_in_group("CorrectFace"):
 						canClick = false
-						gameTimer.set_wait_time(gameTimer.get_time_left() + 3)
+						gameTimer.set_wait_time(gameTimer.get_time_left() + correctBonus)
+						# print("time left: ", gameTimer.get_time_left()) #DEBUG
+						updateTimeTextLabel()
 						gameTimer.set_paused(true)
 						thisFace.clickFace()
 						correctFaceFound = true
 						incrementScore()
 						clearFaces(true)
 
+						var timePopup: Node2D = timePopupScene.instantiate()
+						timePopup.setTimeChange(correctBonus)
+						add_child(timePopup)
+						timePopup.global_position = viewport.get_mouse_position()
+
+						# Section/level set switch
+						if score % levelsPerSection == 0:
+							musicPlayer.stop()
+							for child in get_children():
+								if child.is_in_group("CorrectFace"):
+									child.clickFace()
+									await child.eventEmitter.stopped
+									break
+							musicPlayer.set_parameter("StartMode", "Transition")
+							var currMusicSection = musicPlayer.get_parameter("Section")
+							musicPlayer.set_parameter("Section", currMusicSection+1)
+							musicPlayer.play()
+
+							currSectionIndex += 1
+							# if gameJson["sections"]["sequence"]
+							loadSectionBySequenceIndex(currSectionIndex)
 						correctGuessPauseTimer.start()
-						await correctGuessPauseTimer.timeout
+						await advanceRound
 						reinitializeRound()
 						break
 
 				if !correctFaceFound:
 					print("Incorrect face clicked")
-					var timeLeft: float = gameTimer.get_time_left() - 5.0
+					var timeLeft: float = gameTimer.get_time_left() - incorrectPenalty
 					if timeLeft < 0:
 						gameTimer.stop()
 						gameTimer.timeout.emit()
 					else:
 						gameTimer.start(timeLeft)
+						var timePopup: Node2D = timePopupScene.instantiate()
+						timePopup.setTimeChange(-incorrectPenalty)
+						add_child(timePopup)
+						timePopup.global_position = viewport.get_mouse_position()
 					var firstIncorrectFace: Node2D = instance_from_id(bodies[0]["collider_id"])
 					firstIncorrectFace.clickFace()
-
+		
 		viewport.set_input_as_handled()
 
 
 func _on_game_timer_timeout() -> void:
 	canClick = false
 	clearFaces(true)
-	musicPlayer.set_parameter("PlayGameOver", 1)
+	clearPopups()
+	musicPlayer.set_parameter("StartMode", "GameOver")
 	musicPlayer.set_parameter("LeaveIntroLoop", 0)
 	musicPlayer.stop()
 	for child in get_children():
@@ -423,3 +515,7 @@ func _on_game_timer_timeout() -> void:
 	await correctGuessPauseTimer.timeout
 	closeGame()
 	gameCompleted.emit()
+
+
+func _on_correct_guess_pause_timer_timeout() -> void:
+	advanceRound.emit()

@@ -27,17 +27,21 @@ General/banks_path="res://assets/fmodproj/Build/Desktop"
 General/is_memory_tracking_enabled=false
 General/should_load_by_name=false
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="SquadWanted"
 run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/images/icon.svg"
 
 [autoload]
 
 Global="*res://scripts/global.gd"
-FmodManager="*res://addons/fmod/FmodManager.gd"
+FmodManager="*uid://cds10pm7hwn3p"
 
 [display]
 
@@ -61,6 +65,7 @@ folder_colors={
 
 Face=""
 Edge=""
+Popup=""
 
 [input]
 

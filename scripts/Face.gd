@@ -15,7 +15,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var eyesSprite: Sprite2D = $Eyes
-var spriteSize: int = 72
+var gameAreaToWrapEdgeDistance: int = 64
 
 func _ready():
 	eyesSprite.set_visible(false)
@@ -42,13 +42,13 @@ func _physics_process(delta) -> void:
 # Called by GameAreaEdge.gd
 func screenWrap(edgeName:String) -> void:
 	if edgeName == "BottomEdge" and velocity.y > 0:
-		position.y -= gameNode.gameArea.size.y + spriteSize-4
+		position.y -= gameNode.gameArea.size.y + gameAreaToWrapEdgeDistance
 	elif edgeName == "TopEdge" and velocity.y < 0:
-		position.y += gameNode.gameArea.size.y + spriteSize-4
+		position.y += gameNode.gameArea.size.y + gameAreaToWrapEdgeDistance
 	elif edgeName == "RightEdge" and velocity.x > 0:
-		position.x -= gameNode.gameArea.size.x + spriteSize-4
+		position.x -= gameNode.gameArea.size.x + gameAreaToWrapEdgeDistance
 	elif edgeName == "LeftEdge" and velocity.x < 0:
-		position.x += gameNode.gameArea.size.x + spriteSize-4
+		position.x += gameNode.gameArea.size.x + gameAreaToWrapEdgeDistance
 
 # Called by Game.gd
 func clickFace():

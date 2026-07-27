@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://belkkanxlad25"]
+
+[ext_resource type="Texture2D" uid="uid://bl50ppaomvr7d" path="res://assets/images/128x shittily drawn circle.png" id="1_pkp6l"]
+
+[node name="Light1" type="PointLight2D" unique_id=650819166]
+light_mask = 2
+visibility_layer = 2
+color = Color(0.76862746, 0.76862746, 0.24313726, 1)
+energy = 2.7
+range_item_cull_mask = 2
+texture = ExtResource("1_pkp6l")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1864525259]
+gizmo_extents = 64.0

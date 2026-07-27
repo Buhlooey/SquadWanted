@@ -1,82 +1,262 @@
 {
-	"intro": [
-		{
-			"placeMode": 0,
-			"faces": 20,
-			"moveVelocity": 0,
-			"sameMoveDir": false,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": false
-		},
-		{
-			"placeMode": 1,
-			"gridWidth": 2,
-			"gridHeight": 2
-		},
-		{
-			"placeMode": 2,
-			"borderToUse": 1
-		},
-		{
-			"placeMode": 4,
-			"faces": 20,
-			"moveVelocity": 100,
-			"sameMoveDir": false,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": true
-		}
+	"sequence": [
+		"intro",
+		"intro2",
+		"section1",
+		"section2"
 	],
-	"section1": [
-		{
-			"placeMode": 0,
-			"faces": 100,
-			"moveVelocity": 0,
-			"sameMoveDir": false,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": false
+	"fallbackSections": ["section1", "section2"],
+
+	"sections": {
+		"intro": {
+			"sequential": true,
+			"musicSection": 0,
+			"faces": [
+				"Alex", "Dyl", "Soda", "Tyflo"
+			],
+			"levels": [
+				{
+					"placeMode": 1,
+					"gridWidth": 2,
+					"gridHeight": 2
+				},
+				{
+					"placeMode": 1,
+					"gridWidth": 4,
+					"gridHeight": 4
+				},
+				{
+					"placeMode": 1,
+					"gridWidth": 6,
+					"gridHeight": 6
+				},
+				{
+					"placeMode": 0,
+					"faces": 30,
+					"moveVelocity": 0,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 50,
+					"moveVelocity": 0,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 1
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 0
+				},
+				{
+					"placeMode": 0,
+					"faces": 50,
+					"moveVelocity": 20,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 60,
+					"moveVelocity": 20,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 60,
+					"moveVelocity": 20,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				}
+			]
 		},
-		{
-			"placeMode": 0,
-			"faces": 50,
-			"moveVelocity": 80,
-			"sameMoveDir": true,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": false
+		"intro2": {
+			"sequential": true,
+			"musicSection": 1,
+			"faces": [
+				"Alex", "Dyl", "Soda", "Tyflo"
+			],
+			"levels": [
+				{
+					"placeMode": 1,
+					"gridWidth": 8,
+					"gridHeight": 8
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 2
+				},
+				{
+					"placeMode": 0,
+					"faces": 80,
+					"moveVelocity": 80,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 1,
+					"gridWidth": 11,
+					"gridHeight": 9
+				},
+				{
+					"placeMode": 0,
+					"faces": 80,
+					"moveVelocity": 100,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 80,
+					"moveVelocity": 30,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 4,
+					"faces": 20,
+					"moveVelocity": 300,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 3
+				},
+				{
+					"placeMode": 0,
+					"faces": 80,
+					"moveVelocity": 100,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				},
+				{
+					"placeMode": 4,
+					"faces": 30,
+					"moveVelocity": 300,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				}
+				
+			]
 		},
-		{
-			"placeMode": 0,
-			"faces": 50,
-			"moveVelocity": 40,
-			"sameMoveDir": false,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": false
+		"section1": {
+			"sequential": false,
+			"musicSection": 2,
+			"faces": [
+				"Alex"
+			],
+			"levels": [
+				{
+					"placeMode": 0,
+					"faces": 100,
+					"moveVelocity": 0,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 50,
+					"moveVelocity": 80,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 0,
+					"faces": 50,
+					"moveVelocity": 40,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 1,
+					"gridWidth": 5,
+					"gridHeight": 5
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 1
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 0
+				},
+				{
+					"placeMode": 4,
+					"faces": 20,
+					"moveVelocity": 300,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				}
+			]
 		},
-		{
-			"placeMode": 1,
-			"gridWidth": 5,
-			"gridHeight": 5
-		},
-		{
-			"placeMode": 2,
-			"borderToUse": 1
-		},
-		{
-			"placeMode": 2,
-			"borderToUse": 0
-		},
-		{
-			"placeMode": 4,
-			"faces": 20,
-			"moveVelocity": 300,
-			"sameMoveDir": false,
-			"doWaveMovementX": false,
-			"doWaveMovementY": false,
-			"doBounceOnEdges": true
+		"section2": {
+			"sequential": false,
+			"musicSection": 3,
+			"levels": [
+				{
+					"placeMode": 0,
+					"faces": 20,
+					"moveVelocity": 0,
+					"sameMoveDir": true,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": false
+				},
+				{
+					"placeMode": 1,
+					"gridWidth": 2,
+					"gridHeight": 2
+				},
+				{
+					"placeMode": 2,
+					"borderToUse": 1
+				},
+				{
+					"placeMode": 4,
+					"faces": 20,
+					"moveVelocity": 100,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				}
+			]
 		}
-	]
+	}
 }

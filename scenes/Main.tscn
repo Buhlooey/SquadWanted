@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1gx5xkjckbnj"]
+[gd_scene format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
-[ext_resource type="Texture2D" uid="uid://cpexlbh0t8t4n" path="res://assets/images/BGBrick.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
+[ext_resource type="PackedScene" uid="uid://belkkanxlad25" path="res://scenes/Spotlight.tscn" id="6_jlsqs"]
+[ext_resource type="Theme" uid="uid://cwkbel2tk53ie" path="res://assets/QuantityText.tres" id="7_jlsqs"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
@@ -33,17 +34,186 @@ size = Vector2(80, 648)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c01mt"]
 size = Vector2(80, 648)
 
-[node name="Main" type="Node2D"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nxtc6"]
+load_path = "res://.godot/imported/BGBrick.png-c23e9b1161e63a403d8d944fe7ddb610.ctex"
 
-[node name="BG" type="Sprite2D" parent="."]
+[sub_resource type="Animation" id="Animation_nxtc6"]
+resource_name = "RESET"
+length = 0.0167
+step = 0.0167
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Spotlight1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-144, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spotlight2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(144, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spotlight1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Spotlight2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_jlsqs"]
+resource_name = "style1"
+length = 0.3
+step = 0.0167
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Spotlight1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-144, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spotlight2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(144, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spotlight1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Spotlight2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_q8u5g"]
+resource_name = "style1Intro"
+length = 2.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Spotlight1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4, 2.3, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-144, 0), Vector2(144, 0), Vector2(-144, 0), Vector2(-50, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Spotlight2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4, 2.3, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(144, 0), Vector2(-144, 0), Vector2(144, 0), Vector2(50, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spotlight1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Spotlight2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q8u5g"]
+_data = {
+&"RESET": SubResource("Animation_nxtc6"),
+&"style1": SubResource("Animation_jlsqs"),
+&"style1Intro": SubResource("Animation_q8u5g")
+}
+
+[node name="Main" type="Node2D" unique_id=1195642785]
+
+[node name="BG" type="Sprite2D" parent="." unique_id=923291719]
 position = Vector2(320, 180)
 scale = Vector2(640, 360)
 texture = SubResource("GradientTexture1D_wrlmn")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=242340406]
 position = Vector2(320, 180)
 
-[node name="TitleScreen" type="Control" parent="."]
+[node name="TitleScreen" type="Control" parent="." unique_id=850617712]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 320.0
@@ -52,7 +222,7 @@ offset_right = 360.0
 offset_bottom = 220.0
 script = ExtResource("1_nxtc6")
 
-[node name="StartButton" type="Button" parent="TitleScreen"]
+[node name="StartButton" type="Button" parent="TitleScreen" unique_id=356458980]
 layout_mode = 0
 offset_left = -47.0
 offset_top = 35.0
@@ -60,7 +230,7 @@ offset_right = 49.0
 offset_bottom = 66.0
 text = "Start Game"
 
-[node name="Title" type="RichTextLabel" parent="TitleScreen"]
+[node name="Title" type="RichTextLabel" parent="TitleScreen" unique_id=1163788684]
 layout_mode = 0
 offset_left = -73.0
 offset_top = -75.0
@@ -68,7 +238,7 @@ offset_right = 117.0
 offset_bottom = -35.0
 text = "SQUANTED!!!!!!!!!"
 
-[node name="Game" type="Node2D" parent="." groups=["Game"]]
+[node name="Game" type="Node2D" parent="." unique_id=1576560368 groups=["Game"]]
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 placementMode = 1
@@ -77,71 +247,87 @@ gridWidth = 8
 gridHeight = 8
 moveVelocity = 100
 
-[node name="GameArea" type="Area2D" parent="Game"]
+[node name="GameArea" type="Area2D" parent="Game" unique_id=2043590849]
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/GameArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/GameArea" unique_id=751238493]
 shape = SubResource("RectangleShape2D_3cqv8")
 
-[node name="StaticBorder" type="StaticBody2D" parent="Game"]
+[node name="StaticBorder" type="StaticBody2D" parent="Game" unique_id=2130478168]
 collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_nxtc6")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Game/StaticBorder"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Game/StaticBorder" unique_id=384108160]
 polygon = PackedVector2Array(241, 181, 241, -181, -241, -181, -241, 181, 241, 181, 241, 187, -247, 187, -247, -187, 247, -187, 247, 187, 241, 187)
 
-[node name="WrapEdges" type="Node2D" parent="Game"]
+[node name="WrapEdges" type="Node2D" parent="Game" unique_id=1377803798]
 
-[node name="BottomEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
-position = Vector2(0, 245)
+[node name="BottomEdge" type="Area2D" parent="Game/WrapEdges" unique_id=10514944 groups=["Edge"]]
+position = Vector2(0, 244)
 collision_mask = 2
 script = ExtResource("5_nxtc6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/BottomEdge"]
-position = Vector2(0, 39)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/BottomEdge" unique_id=2087977991]
+position = Vector2(0, 40)
 shape = SubResource("RectangleShape2D_nxtc6")
 
-[node name="TopEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
-position = Vector2(0, -245)
+[node name="TopEdge" type="Area2D" parent="Game/WrapEdges" unique_id=1919020522 groups=["Edge"]]
+position = Vector2(0, -244)
 collision_mask = 2
 script = ExtResource("5_nxtc6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/TopEdge"]
-position = Vector2(0, -39)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/TopEdge" unique_id=1169870465]
+position = Vector2(0, -40)
 shape = SubResource("RectangleShape2D_jlsqs")
 
-[node name="RightEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
-position = Vector2(305, 0)
+[node name="RightEdge" type="Area2D" parent="Game/WrapEdges" unique_id=610327832 groups=["Edge"]]
+position = Vector2(304, 0)
 collision_mask = 2
 script = ExtResource("5_nxtc6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/RightEdge"]
-position = Vector2(39, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/RightEdge" unique_id=2119221150]
+position = Vector2(40, 0)
 shape = SubResource("RectangleShape2D_q8u5g")
 
-[node name="LeftEdge" type="Area2D" parent="Game/WrapEdges" groups=["Edge"]]
-position = Vector2(-305, 0)
+[node name="LeftEdge" type="Area2D" parent="Game/WrapEdges" unique_id=303259770 groups=["Edge"]]
+position = Vector2(-304, 0)
 collision_mask = 2
 script = ExtResource("5_nxtc6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/LeftEdge"]
-position = Vector2(-39, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WrapEdges/LeftEdge" unique_id=268124993]
+position = Vector2(-40, 0)
 shape = SubResource("RectangleShape2D_c01mt")
 
-[node name="WantedBg" type="Sprite2D" parent="Game"]
-z_index = 1
-texture_filter = 1
+[node name="WantedVisual" type="Node2D" parent="Game" unique_id=1049082537]
+modulate = Color(0.20392157, 0.20392157, 0.4627451, 1)
 position = Vector2(-320, 0)
-texture = ExtResource("4_c01mt")
 
-[node name="WantedIcon" type="Sprite2D" parent="Game"]
+[node name="WantedIcon" type="Sprite2D" parent="Game/WantedVisual" unique_id=571236427]
+show_behind_parent = true
+light_mask = 3
 z_index = 2
-position = Vector2(-320, 10)
+position = Vector2(0, 3)
 scale = Vector2(4, 4)
 texture = ExtResource("7_nxtc6")
 
-[node name="TimeAndScore" type="Control" parent="Game"]
-z_index = 3
+[node name="WantedBg" type="Sprite2D" parent="Game/WantedVisual" unique_id=2013638197]
+light_mask = 2
+z_index = 1
+texture_filter = 1
+texture = SubResource("CompressedTexture2D_nxtc6")
+
+[node name="Spotlight1" parent="Game/WantedVisual" unique_id=650819166 instance=ExtResource("6_jlsqs")]
+position = Vector2(-144, 0)
+
+[node name="Spotlight2" parent="Game/WantedVisual" unique_id=276847224 instance=ExtResource("6_jlsqs")]
+position = Vector2(144, 0)
+rotation = 1.5707964
+
+[node name="SpotlightAnimator" type="AnimationPlayer" parent="Game/WantedVisual" unique_id=1636544358]
+libraries/ = SubResource("AnimationLibrary_q8u5g")
+
+[node name="TimeAndScore" type="Control" parent="Game" unique_id=2047357405]
+z_index = 10
 layout_mode = 3
 anchors_preset = 0
 offset_left = -400.0
@@ -150,7 +336,7 @@ offset_right = -240.0
 offset_bottom = 180.0
 theme = ExtResource("6_c01mt")
 
-[node name="ScoreTitleText" type="RichTextLabel" parent="Game/TimeAndScore"]
+[node name="ScoreTitleText" type="RichTextLabel" parent="Game/TimeAndScore" unique_id=1970575795]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 254.0
@@ -160,19 +346,18 @@ bbcode_enabled = true
 text = "[center]Score[/center]"
 scroll_active = false
 
-[node name="ScoreText" type="RichTextLabel" parent="Game/TimeAndScore"]
+[node name="ScoreText" type="RichTextLabel" parent="Game/TimeAndScore" unique_id=1694901001]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 272.0
 offset_right = 159.0
 offset_bottom = 360.0
-theme = ExtResource("6_c01mt")
-theme_override_font_sizes/bold_font_size = 64
+theme = ExtResource("7_jlsqs")
 bbcode_enabled = true
 text = "[center][b]0[/b][/center]"
 scroll_active = false
 
-[node name="TimeTitleText" type="RichTextLabel" parent="Game/TimeAndScore"]
+[node name="TimeTitleText" type="RichTextLabel" parent="Game/TimeAndScore" unique_id=1311850919]
 layout_mode = 0
 offset_left = 1.0
 offset_right = 159.0
@@ -181,43 +366,51 @@ bbcode_enabled = true
 text = "[center]Time[/center]"
 scroll_active = false
 
-[node name="TimeText" type="RichTextLabel" parent="Game/TimeAndScore"]
+[node name="TimeText" type="RichTextLabel" parent="Game/TimeAndScore" unique_id=1166206411]
 layout_mode = 0
 offset_top = 22.0
 offset_right = 160.0
 offset_bottom = 112.0
-theme = ExtResource("6_c01mt")
-theme_override_font_sizes/bold_font_size = 64
+theme = ExtResource("7_jlsqs")
 bbcode_enabled = true
 text = "[center][b]10[font_size=32].0"
 scroll_active = false
 
-[node name="GameTimer" type="Timer" parent="Game"]
+[node name="GameTimer" type="Timer" parent="Game" unique_id=929718821]
 wait_time = 30.0
 one_shot = true
 
-[node name="CorrectGuessPauseTimer" type="Timer" parent="Game"]
-wait_time = 3.0
+[node name="CorrectGuessPauseTimer" type="Timer" parent="Game" unique_id=1918505060]
+wait_time = 0.5
 one_shot = true
 
-[node name="FmodAndAudio" type="Node2D" parent="Game"]
+[node name="FmodAndAudio" type="Node2D" parent="Game" unique_id=149375121]
 position = Vector2(-400, -180)
 
-[node name="FmodBankLoader" type="FmodBankLoader" parent="Game/FmodAndAudio"]
+[node name="FmodBankLoader" type="FmodBankLoader" parent="Game/FmodAndAudio" unique_id=1513234065]
 bank_paths = ["res://assets/fmodproj/Build/Desktop/Master.strings.bank", "res://assets/fmodproj/Build/Desktop/Master.bank"]
 
-[node name="FmodMusic" type="FmodEventEmitter2D" parent="Game/FmodAndAudio" groups=["FmodAudioPlayer"]]
+[node name="FmodMusic" type="FmodEventEmitter2D" parent="Game/FmodAndAudio" unique_id=1707691128 groups=["FmodAudioPlayer"]]
 event_name = "event:/Music"
 event_guid = "{79c4eb97-251d-49c1-8d44-8b18a81a6619}"
+preload_event = false
 volume = 0.3
 fmod_parameters/LeaveIntroLoop/id = -5667652807413369816
 fmod_parameters/LeaveIntroLoop = 0.0
 fmod_parameters/LeaveIntroLoop/variant_type = 2
-fmod_parameters/PlayGameOver/id = -1373046688063544679
-fmod_parameters/PlayGameOver = 0.0
-fmod_parameters/PlayGameOver/variant_type = 2
+fmod_parameters/Section/id = -6073733565928085204
+fmod_parameters/Section = 0
+fmod_parameters/Section/variant_type = 2
+fmod_parameters/StartMode/id = -1373046688063544679
+fmod_parameters/StartMode = "Intro"
+fmod_parameters/StartMode/labels = PackedStringArray("Intro", "GameOver", "Transition")
+fmod_parameters/StartMode/variant_type = 4
 
-[node name="FmodListener2D" type="FmodListener2D" parent="Game/FmodAndAudio"]
+[node name="FmodShortDrumroll" type="FmodEventEmitter2D" parent="Game/FmodAndAudio" unique_id=2010771701]
+event_name = "event:/SFX/Short Drumroll"
+event_guid = "{762b882f-8b3b-43d8-86e6-0ea38b9293d5}"
+
+[node name="FmodListener2D" type="FmodListener2D" parent="Game/FmodAndAudio" unique_id=1967189430]
 is_locked = true
 position = Vector2(320, 180)
 
@@ -228,3 +421,4 @@ position = Vector2(320, 180)
 [connection signal="body_entered" from="Game/WrapEdges/RightEdge" to="Game/WrapEdges/RightEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/LeftEdge" to="Game/WrapEdges/LeftEdge" method="_on_body_entered"]
 [connection signal="timeout" from="Game/GameTimer" to="Game" method="_on_game_timer_timeout"]
+[connection signal="timeout" from="Game/CorrectGuessPauseTimer" to="Game" method="_on_correct_guess_pause_timer_timeout"]

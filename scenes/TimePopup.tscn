@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dthk6x5udjivk"]
+
+[ext_resource type="Script" uid="uid://cai8n7mlnnymp" path="res://scripts/TimePopup.gd" id="1_to31b"]
+[ext_resource type="Theme" uid="uid://w3kgkoatsp5c" path="res://assets/QuantityTextSmall.tres" id="2_to31b"]
+
+[node name="TimePopup" type="Node2D" unique_id=2131434756 groups=["Popup"]]
+script = ExtResource("1_to31b")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=898396841]
+offset_left = -187.0
+offset_top = -26.0
+offset_right = 187.0
+offset_bottom = 23.0
+mouse_filter = 2
+theme = ExtResource("2_to31b")
+bbcode_enabled = true
+text = "[center][b][color=#f66]s"
+
+[node name="Timer" type="Timer" parent="." unique_id=1898384570]
+wait_time = 1.5
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
