@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dsb335kjx1kyv"]
+[gd_scene format=3 uid="uid://dsb335kjx1kyv"]
 
 [ext_resource type="Script" uid="uid://bf8hwcnut10ah" path="res://scripts/Face.gd" id="1_x8u74"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="2_qu273"]
@@ -7,24 +7,24 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
 radius = 24.0
 
-[node name="Face" type="CharacterBody2D" groups=["Face"]]
+[node name="Face" type="CharacterBody2D" unique_id=2089047892 groups=["Face"]]
 collision_layer = 2
 script = ExtResource("1_x8u74")
 faceName = "Alex"
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=765914436]
 scale = Vector2(2, 2)
 texture = ExtResource("2_qu273")
 
-[node name="Eyes" type="Sprite2D" parent="."]
+[node name="Eyes" type="Sprite2D" parent="." unique_id=435979852]
 scale = Vector2(2, 2)
 texture = ExtResource("3_q4u30")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=548010000]
 shape = SubResource("CircleShape2D_ounrp")
 
-[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="."]
-event_name = "event:/Voicelines"
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="." unique_id=1461201683]
+event_name = "event:/SFX/Voicelines"
 event_guid = "{90005da6-8ede-4d59-84de-f7e415315d28}"
 fmod_parameters/Face/id = -6653342042967358386
 fmod_parameters/Face = "Alex"

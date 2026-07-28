@@ -49,6 +49,10 @@ var canClick: bool = true
 
 var timePopupScene: PackedScene = preload('res://scenes/TimePopup.tscn')
 
+var playSectionIntro: bool = true
+var animationStyle: String = "0"
+var animationStyleCount: int = 1
+
 # ~~~~~ Faces ~~~~~
 
 var faceScene: PackedScene = preload('res://scenes/Face.tscn')
@@ -79,12 +83,15 @@ var gameArea: Rect2
 @onready var staticBorder: StaticBody2D = $StaticBorder
 
 @onready var wantedIcon: Sprite2D = $WantedVisual/WantedIcon
+@onready var spotlightAnimator: AnimationPlayer = $WantedVisual/SpotlightAnimator
 @onready var timeTextLabel: RichTextLabel = $TimeAndScore/TimeText
 @onready var scoreTextLabel: RichTextLabel = $TimeAndScore/ScoreText
 @onready var correctGuessPauseTimer: Timer = $CorrectGuessPauseTimer
 @onready var gameTimer: Timer = $GameTimer
 
 @onready var musicPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodMusic
+@onready var drumrollPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodShortDrumroll
+
 
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
@@ -98,7 +105,8 @@ var levelsPerSection: int = 10
 # ~~~~~ Signals ~~~~~
 signal gameCompleted()
 signal advanceRound()
-
+signal showFaces()
+signal startDrumroll()
 
 # ~~~~~~~~~~~~~~~ FUNCTIONALITY ~~~~~~~~~~~~~~~
 
@@ -106,6 +114,7 @@ signal advanceRound()
 func _ready():
 	set_visible(false)
 	musicPlayer.play()
+	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	gameJson["sections"] = gameJson["sections"]
 
@@ -122,7 +131,6 @@ func initializeRound():
 		sequentialLevelIndex += 1
 	else:
 		loadLevelPreset()
-	gameArea = gameAreaCollider.get_shape().get_rect()
 
 	# Enable/disable bouncing
 	if doBounceOnEdges:
@@ -240,6 +248,16 @@ func initializeRound():
 							wanted,
 							moveVelocity,
 							randomizeAngleIfApplicable())
+	
+	if playSectionIntro:
+		await startDrumroll
+		spotlightAnimator.play("style" + animationStyle + "Intro")
+		playSectionIntro = false
+	else:
+		spotlightAnimator.play("style" + animationStyle)
+		drumrollPlayer.play()
+	await spotlightAnimator.animation_finished
+	showFaces.emit()
 
 	gameTimer.set_paused(false)
 	gameTimer.start()
@@ -273,6 +291,7 @@ func startGame() -> void:
 	sequentialLevelIndex = 0
 	startNewSection()
 	gameTimer.set_wait_time(initialWaitTime)
+	playSectionIntro = true
 	initializeRound()
 	set_visible(true)
 
@@ -326,6 +345,11 @@ func clearPopups():
 func startNewSection(byIndex: bool = true, sectionName: String = "") -> void:
 	if byIndex: loadSectionBySequenceIndex(sequentialLevelIndex)
 	else: loadSection(sectionName)
+	if score == 0:
+		animationStyle = "1"
+	else:
+		animationStyle = str(randi_range(1, animationStyleCount+1))
+		print("Animation style: {animationStyle}")
 
 # ~~~~~ Level Loading ~~~~~
 
@@ -472,6 +496,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 							musicPlayer.play()
 
 							currSectionIndex += 1
+							playSectionIntro = true
 							# if gameJson["sections"]["sequence"]
 							loadSectionBySequenceIndex(currSectionIndex)
 						correctGuessPauseTimer.start()
@@ -519,3 +544,9 @@ func _on_game_timer_timeout() -> void:
 
 func _on_correct_guess_pause_timer_timeout() -> void:
 	advanceRound.emit()
+
+
+func _on_fmod_music_timeline_marker(params: Dictionary):
+	print("FMOD timeline marker crossed: ", params)
+	if params["name"] == "Drumroll":
+		startDrumroll.emit()

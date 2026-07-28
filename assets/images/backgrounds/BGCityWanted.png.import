@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://taaonax6x105"
-path="res://.godot/imported/BGBrick.png-2adcaa175e53f74185a0907e5f398a65.ctex"
+path="res://.godot/imported/BGCityWanted.png-bf8df078af23dd0a7c4a6e13084ff782.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/wantedbgs/BGBrick.png"
-dest_files=["res://.godot/imported/BGBrick.png-2adcaa175e53f74185a0907e5f398a65.ctex"]
+source_file="res://assets/images/backgrounds/BGCityWanted.png"
+dest_files=["res://.godot/imported/BGCityWanted.png-bf8df078af23dd0a7c4a6e13084ff782.ctex"]
 
 [params]
 

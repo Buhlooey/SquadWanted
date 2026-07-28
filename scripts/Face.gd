@@ -19,9 +19,12 @@ var gameAreaToWrapEdgeDistance: int = 64
 
 func _ready():
 	eyesSprite.set_visible(false)
+	sprite.set_visible(false)
 	eventEmitter.set_parameter("Face", faceName)
 	sprite.set_texture(textures[0])
 	eyesSprite.set_texture(textures[1])
+	await gameNode.showFaces
+	sprite.set_visible(true)
 
 
 func _physics_process(delta) -> void:
