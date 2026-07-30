@@ -1,25 +1,24 @@
 Alpha Build testers: Alex, Dyl, Soda, Tyflo, Pepper
 
 ALPHA BUILD 1: Functionality Testing 
-- Get and implement Alex's voicelines this mf
-- Presets for levels, which are randomly selected
+X Get and implement Alex's voicelines this mf
+X Presets for levels, which are randomly selected
 	- 2 for each placement mode
-- A set of presets for intro levels
+X A set of presets for intro levels
 	- 2x2 grid, larger grids, borders, slow movements
-- Popups for time gains/losses (+3, -5)
-- Time cap (60s)
+X Popups for time gains/losses (+3, -5)
+? Time cap (60s)
 - Parry key
-- Audio buses
-- Main menu volume control
+X Audio buses
+X Main menu volume control
 
 ALPHA BUILD 2: Gameplay and Visual Polish
-- Spotlight effects at start of each round
-- Section changes every 10 levels
+X Spotlight effects at start of each round
+X Section changes every 10 levels
 	- Difficulty scaling + parameter-difficulty script
 	- Music variations differ between sections
-- 1 new music variation
-- City streets background
-- 1 new visual environment set
+X City streets background
+X Transition between sections
 
 ALPHA BUILD 3: More Content
 - 1-2 new sets of faces
@@ -27,6 +26,8 @@ ALPHA BUILD 3: More Content
 	- or Squad 1 members: Kazuki, Skull, Muff, Mer
 - Section 2 has set 2, section 3 onward has two sets
 - More spotlight effects
+- 1 new music variation
+- 1 new visual environment set
 
 ---
 
@@ -43,6 +44,7 @@ Future features:
 - High score tracking
 - High score saving
 - Hard Mode
+- Dialogue + Story
 
 Environments:
 - Science facility with a monitor that says "DANGER"

@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://b1gx5xkjckbnj"]
 
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
+[ext_resource type="Script" uid="uid://0djw1mqckdus" path="res://scripts/main.gd" id="1_mwfav"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
+[ext_resource type="Script" uid="uid://bw4emgkgwuvc8" path="res://scripts/BusVolumeSlider.gd" id="2_wp0k4"]
 [ext_resource type="Texture2D" uid="uid://taaonax6x105" path="res://assets/images/backgrounds/BGCityWanted.png" id="5_jlsqs"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
@@ -9,6 +11,10 @@
 [ext_resource type="Theme" uid="uid://cwkbel2tk53ie" path="res://assets/QuantityText.tres" id="7_jlsqs"]
 [ext_resource type="Texture2D" uid="uid://cmk3xbukgx5rb" path="res://assets/images/faces/FaceAlex.png" id="7_nxtc6"]
 [ext_resource type="Texture2D" uid="uid://cbok7svonui7j" path="res://assets/images/backgrounds/BGCity.png" id="9_q8u5g"]
+[ext_resource type="Texture2D" uid="uid://dwnxjqwjglehc" path="res://assets/images/GameOver.png" id="10_lhr70"]
+[ext_resource type="Script" uid="uid://bwmdpk1vfu6l6" path="res://scripts/FlavorTextPopup.gd" id="12_3p2gp"]
+[ext_resource type="Texture2D" uid="uid://c0a761kixd3io" path="res://assets/images/EmblemTransitionBG.png" id="12_qmy6f"]
+[ext_resource type="Texture2D" uid="uid://b74kfklrwvw5s" path="res://assets/images/SquadSpotterEmblem.png" id="13_mwfav"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -202,7 +208,99 @@ _data = {
 &"style1Intro": SubResource("Animation_q8u5g")
 }
 
+[sub_resource type="Animation" id="Animation_qmy6f"]
+resource_name = "RESET"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(6, 6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3p2gp"]
+resource_name = "transition1end"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(6, 6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mwfav"]
+resource_name = "transition1start"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(6, 6), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mwfav"]
+_data = {
+&"RESET": SubResource("Animation_qmy6f"),
+&"transition1end": SubResource("Animation_3p2gp"),
+&"transition1start": SubResource("Animation_mwfav")
+}
+
 [node name="Main" type="Node2D" unique_id=1195642785]
+script = ExtResource("1_mwfav")
 
 [node name="BG" type="Sprite2D" parent="." unique_id=923291719]
 position = Vector2(320, 180)
@@ -236,6 +334,46 @@ offset_top = -75.0
 offset_right = 117.0
 offset_bottom = -35.0
 text = "SQUANTED!!!!!!!!!"
+
+[node name="VSliderMusic" type="VSlider" parent="TitleScreen" unique_id=65961114]
+layout_mode = 0
+offset_left = 214.0
+offset_top = 21.0
+offset_right = 230.0
+offset_bottom = 162.0
+max_value = 1.0
+step = 0.01
+tick_count = 10
+ticks_position = 2
+script = ExtResource("2_wp0k4")
+busName = "Music"
+
+[node name="VSliderSFX" type="VSlider" parent="TitleScreen" unique_id=2065977913]
+layout_mode = 0
+offset_left = 267.0
+offset_top = 21.0
+offset_right = 283.0
+offset_bottom = 162.0
+max_value = 1.0
+step = 0.01
+tick_count = 10
+ticks_position = 2
+script = ExtResource("2_wp0k4")
+busName = "SFX"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen" unique_id=253333146]
+layout_mode = 0
+offset_left = -315.0
+offset_top = 90.0
+offset_right = 303.0
+offset_bottom = 208.0
+theme_override_font_sizes/normal_font_size = 10
+text = "Music, sound art, programming, secret slice of pizza 🍕: Buhlooey
+Voice talent: Alex, Tyflo, Dyl, and Soda thanks guys
+Concept: Wanted! (New Super Mario Bros., Super Mario 64 DS) by Nintendo
+
+Audio Engine: FMOD by Firelight Technologies Pty Ltd. + fmod-gdextension by utopia-rise
+Made (with <3!) in Godot 4"
 
 [node name="Game" type="Node2D" parent="." unique_id=1576560368 groups=["Game"]]
 position = Vector2(400, 180)
@@ -415,7 +553,42 @@ volume = 0.3
 is_locked = true
 position = Vector2(320, 180)
 
+[node name="FlavorTextPopup" type="RichTextLabel" parent="Game" unique_id=1429723993]
+visible = false
+z_index = 10
+offset_left = -240.0
+offset_top = -24.0
+offset_right = 240.0
+offset_bottom = 40.0
+theme = ExtResource("6_c01mt")
+bbcode_enabled = true
+text = "[center]GOT 'EM!"
+script = ExtResource("12_3p2gp")
+
+[node name="GameOverPopup" type="Sprite2D" parent="Game" unique_id=1443025125]
+visible = false
+z_index = 10
+texture = ExtResource("10_lhr70")
+
+[node name="EmblemTransitionBg" type="Sprite2D" parent="." unique_id=2103191154]
+z_index = 11
+position = Vector2(320, 180)
+scale = Vector2(6, 6)
+texture = ExtResource("12_qmy6f")
+
+[node name="SquadSpotterEmblem" type="Sprite2D" parent="." unique_id=1532080427]
+z_index = 11
+position = Vector2(320, 180)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("13_mwfav")
+
+[node name="TransitionAnimator" type="AnimationPlayer" parent="." unique_id=1380736167]
+libraries/ = SubResource("AnimationLibrary_mwfav")
+
+[connection signal="pressed" from="TitleScreen/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]
+[connection signal="value_changed" from="TitleScreen/VSliderMusic" to="TitleScreen/VSliderMusic" method="_on_value_changed"]
+[connection signal="value_changed" from="TitleScreen/VSliderSFX" to="TitleScreen/VSliderSFX" method="_on_value_changed"]
 [connection signal="input_event" from="Game/GameArea" to="Game" method="_on_game_area_input_event"]
 [connection signal="body_entered" from="Game/WrapEdges/BottomEdge" to="Game/WrapEdges/BottomEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/TopEdge" to="Game/WrapEdges/TopEdge" method="_on_body_entered"]

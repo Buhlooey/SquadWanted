@@ -42,7 +42,6 @@ var moveAngle: float = INVALID_ANGLE
 ## Whether or not faces will bounce off of the edge of the screen or loop to the other side of it. Used in: Scattered, Bounce.
 @export var doBounceOnEdges: bool
 
-
 @export var initialWaitTime: int = 15
 
 var canClick: bool = true
@@ -52,6 +51,9 @@ var timePopupScene: PackedScene = preload('res://scenes/TimePopup.tscn')
 var playSectionIntro: bool = true
 var animationStyle: String = "0"
 var animationStyleCount: int = 1
+
+# var intPart: int
+# var decPart: float
 
 # ~~~~~ Faces ~~~~~
 
@@ -92,6 +94,11 @@ var gameArea: Rect2
 @onready var musicPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodMusic
 @onready var drumrollPlayer: FmodEventEmitter2D = $FmodAndAudio/FmodShortDrumroll
 
+@onready var flavorTextPopup: RichTextLabel = $FlavorTextPopup
+@onready var gameOverPopup: Sprite2D = $GameOverPopup
+
+# ~~~~~ Other Node References ~~~~~
+@onready var mainNode: Node2D = get_tree().get_root().get_node("Main")
 
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
@@ -120,7 +127,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float):
-	updateTimeTextLabel()
+	if !gameTimer.is_paused():
+		updateTimeTextLabel()
 
 
 func initializeRound():
@@ -251,6 +259,7 @@ func initializeRound():
 	
 	if playSectionIntro:
 		await startDrumroll
+		mainNode.transition.play("transition1end")
 		spotlightAnimator.play("style" + animationStyle + "Intro")
 		playSectionIntro = false
 	else:
@@ -262,9 +271,9 @@ func initializeRound():
 	gameTimer.set_paused(false)
 	gameTimer.start()
 
-	currFaceSet.append(currWantedFace)
-
 	canClick = true
+
+	currFaceSet.append(currWantedFace)
 
 
 func initializeFace(faceName: String, facePosition: Vector2, isWanted, faceVelocity: int = 0, faceMoveAngle: float = 0, doGravity: bool = false) -> void:
@@ -288,68 +297,23 @@ func reinitializeRound() -> void:
 	initializeRound()
 
 func startGame() -> void:
+	canClick = false
+	flavorTextPopup.hide()
+	gameOverPopup.hide()
 	sequentialLevelIndex = 0
 	startNewSection()
 	gameTimer.set_wait_time(initialWaitTime)
 	playSectionIntro = true
 	initializeRound()
-	set_visible(true)
+	show()
 
 
 func closeGame() -> void:
 	clearFaces()
 	clearPopups()
-	set_visible(false)
+	hide()
 	resetScore()
 
-
-# ~~~~~ Helpers ~~~~~
-
-func randomizeAngleIfApplicable() -> float:
-	if !sameMoveDir or moveAngle == INVALID_ANGLE:
-		moveAngle = randf_range(0.0, PI*2.0)
-	return moveAngle
-
-
-func updateScoreTextLabel() -> void:
-	scoreTextLabel.text = str("[center][b]", score)
-
-func incrementScore() -> void:
-	score += 1
-	updateScoreTextLabel()
-
-func resetScore() -> void:
-	score = 0
-	updateScoreTextLabel()
-
-func updateTimeTextLabel() -> void:
-	var time: float = gameTimer.time_left
-	var intPart: int = int(time)
-	var decPart: float = snapped(time - intPart, 0.1)
-	timeTextLabel.text = str("[center][b]", intPart, "[font_size=32]", str(decPart).lstrip("0").lstrip("1")) 
-	# timeTextLabel.text = str("[right][b]", str(floor(gameTimer.time_left)).rstrip("."))
-	# var snappedDecimal: float = snapped(gameTimer.time_left - floorf(gameTimer.time_left), 0.1)
-	# timeDecimalTextLabel.text = str("[left][b]", str(snappedDecimal).lstrip("0"))
-
-func clearFaces(onlyIncorrect: bool = false):
-	for child in get_children():
-		if child.is_in_group("Face"):
-			if !child.is_in_group("CorrectFace") or !onlyIncorrect:
-				child.queue_free()
-
-func clearPopups():
-	for child in get_children():
-		if child.is_in_group("Popup"):
-			child.queue_free()
-
-func startNewSection(byIndex: bool = true, sectionName: String = "") -> void:
-	if byIndex: loadSectionBySequenceIndex(sequentialLevelIndex)
-	else: loadSection(sectionName)
-	if score == 0:
-		animationStyle = "1"
-	else:
-		animationStyle = str(randi_range(1, animationStyleCount+1))
-		print("Animation style: {animationStyle}")
 
 # ~~~~~ Level Loading ~~~~~
 
@@ -452,6 +416,67 @@ func loadLevelPreset(index: int = -1) -> void:
 		doWaveMovementY = level["doWaveMovementY"]
 		doBounceOnEdges = level["doBounceOnEdges"]
 
+
+# ~~~~~ Helpers ~~~~~
+
+# UI
+
+func updateScoreTextLabel() -> void:
+	scoreTextLabel.text = str("[center][b]", score)
+
+func incrementScore() -> void:
+	score += 1
+	updateScoreTextLabel()
+
+func resetScore() -> void:
+	score = 0
+	updateScoreTextLabel()
+
+func updateTimeTextLabel() -> void:
+	var time: float = gameTimer.time_left
+	var intPart: int = int(time)
+	var decPart: float = snapped(time - intPart, 0.1)
+	timeTextLabel.text = str("[center][b]", intPart, "[font_size=32]", str(decPart).lstrip("0").lstrip("1")) 
+	# timeTextLabel.text = str("[right][b]", str(floor(gameTimer.time_left)).rstrip("."))
+	# var snappedDecimal: float = snapped(gameTimer.time_left - floorf(gameTimer.time_left), 0.1)
+	# timeDecimalTextLabel.text = str("[left][b]", str(snappedDecimal).lstrip("0"))
+
+func updateTimeTextLabelOnCorrectGuess() -> void:
+	var time: float = gameTimer.time_left + correctBonus
+	var intPart: int = int(time)
+	var decPart: float = snapped(time - intPart, 0.1)
+	timeTextLabel.text = str("[center][b]", intPart, "[font_size=32]", str(decPart).lstrip("0").lstrip("1")) 
+
+
+# Faces
+
+func randomizeAngleIfApplicable() -> float:
+	if !sameMoveDir or moveAngle == INVALID_ANGLE:
+		moveAngle = randf_range(0.0, PI*2.0)
+	return moveAngle
+func clearFaces(onlyIncorrect: bool = false):
+	for child in get_children():
+		if child.is_in_group("Face"):
+			if !child.is_in_group("CorrectFace") or !onlyIncorrect:
+				child.queue_free()
+
+func clearPopups():
+	for child in get_children():
+		if child.is_in_group("Popup"):
+			child.queue_free()
+
+# Levels
+
+func startNewSection(byIndex: bool = true, sectionName: String = "") -> void:
+	if byIndex: loadSectionBySequenceIndex(sequentialLevelIndex)
+	else: loadSection(sectionName)
+	if score == 0:
+		animationStyle = "1"
+	else:
+		animationStyle = str(randi_range(1, animationStyleCount+1))
+		print("Animation style: {animationStyle}")
+
+
 # ~~~~~ Signals ~~~~~
 
 func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) -> void:
@@ -482,6 +507,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						add_child(timePopup)
 						timePopup.global_position = viewport.get_mouse_position()
 
+						updateTimeTextLabelOnCorrectGuess()
 						# Section/level set switch
 						if score % levelsPerSection == 0:
 							musicPlayer.stop()
@@ -494,6 +520,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 							var currMusicSection = musicPlayer.get_parameter("Section")
 							musicPlayer.set_parameter("Section", currMusicSection+1)
 							musicPlayer.play()
+							flavorTextPopup.showSectionComplete()
 
 							currSectionIndex += 1
 							playSectionIntro = true
@@ -501,6 +528,10 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 							loadSectionBySequenceIndex(currSectionIndex)
 						correctGuessPauseTimer.start()
 						await advanceRound
+						if score % levelsPerSection == 0:
+							mainNode.transition.play("transition1start")
+							await mainNode.transition.animation_finished
+							flavorTextPopup.hide()
 						reinitializeRound()
 						break
 
@@ -537,6 +568,7 @@ func _on_game_timer_timeout() -> void:
 
 	musicPlayer.play()
 	correctGuessPauseTimer.start()
+	gameOverPopup.set_visible(true)
 	await correctGuessPauseTimer.timeout
 	closeGame()
 	gameCompleted.emit()
