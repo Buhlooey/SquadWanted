@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bn8koicq3uriq" path="res://scripts/Game.gd" id="1_2307w"]
 [ext_resource type="Script" uid="uid://0djw1mqckdus" path="res://scripts/main.gd" id="1_mwfav"]
 [ext_resource type="Script" uid="uid://d02gbii4ka7xg" path="res://scripts/TitleScreen.gd" id="1_nxtc6"]
-[ext_resource type="Script" uid="uid://bw4emgkgwuvc8" path="res://scripts/BusVolumeSlider.gd" id="2_wp0k4"]
+[ext_resource type="PackedScene" uid="uid://7d4mhuybnohb" path="res://scenes/BusVolumeSlider.tscn" id="3_cvmbd"]
 [ext_resource type="Texture2D" uid="uid://taaonax6x105" path="res://assets/images/backgrounds/BGCityWanted.png" id="5_jlsqs"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
@@ -335,33 +335,23 @@ offset_right = 117.0
 offset_bottom = -35.0
 text = "SQUANTED!!!!!!!!!"
 
-[node name="VSliderMusic" type="VSlider" parent="TitleScreen" unique_id=65961114]
+[node name="VolumeSliderMusic" parent="TitleScreen" unique_id=1159624231 instance=ExtResource("3_cvmbd")]
 layout_mode = 0
-offset_left = 214.0
-offset_top = 21.0
-offset_right = 230.0
-offset_bottom = 162.0
-max_value = 1.0
-step = 0.01
-tick_count = 10
-ticks_position = 2
-script = ExtResource("2_wp0k4")
+offset_left = 207.0
+offset_top = 0.0
+offset_right = 223.0
+offset_bottom = 128.0
 busName = "Music"
 
-[node name="VSliderSFX" type="VSlider" parent="TitleScreen" unique_id=2065977913]
+[node name="VolumeSliderSFX" parent="TitleScreen" unique_id=228938550 instance=ExtResource("3_cvmbd")]
 layout_mode = 0
-offset_left = 267.0
-offset_top = 21.0
-offset_right = 283.0
-offset_bottom = 162.0
-max_value = 1.0
-step = 0.01
-tick_count = 10
-ticks_position = 2
-script = ExtResource("2_wp0k4")
+offset_left = 277.0
+offset_top = 0.0
+offset_right = 293.0
+offset_bottom = 128.0
 busName = "SFX"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen" unique_id=253333146]
+[node name="CreditsText" type="RichTextLabel" parent="TitleScreen" unique_id=253333146]
 layout_mode = 0
 offset_left = -315.0
 offset_top = 90.0
@@ -376,6 +366,7 @@ Audio Engine: FMOD by Firelight Technologies Pty Ltd. + fmod-gdextension by utop
 Made (with <3!) in Godot 4"
 
 [node name="Game" type="Node2D" parent="." unique_id=1576560368 groups=["Game"]]
+visible = false
 position = Vector2(400, 180)
 script = ExtResource("1_2307w")
 placementMode = 1
@@ -587,8 +578,6 @@ libraries/ = SubResource("AnimationLibrary_mwfav")
 
 [connection signal="pressed" from="TitleScreen/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TitleScreen/StartButton" to="TitleScreen" method="_on_start_button_pressed"]
-[connection signal="value_changed" from="TitleScreen/VSliderMusic" to="TitleScreen/VSliderMusic" method="_on_value_changed"]
-[connection signal="value_changed" from="TitleScreen/VSliderSFX" to="TitleScreen/VSliderSFX" method="_on_value_changed"]
 [connection signal="input_event" from="Game/GameArea" to="Game" method="_on_game_area_input_event"]
 [connection signal="body_entered" from="Game/WrapEdges/BottomEdge" to="Game/WrapEdges/BottomEdge" method="_on_body_entered"]
 [connection signal="body_entered" from="Game/WrapEdges/TopEdge" to="Game/WrapEdges/TopEdge" method="_on_body_entered"]
