@@ -19,6 +19,9 @@ X Section changes every 10 levels
 	- Music variations differ between sections
 X City streets background
 X Transition between sections
+- Audio balancing
+- Hard section
+- Refine sections
 
 ALPHA BUILD 3: More Content
 - 1-2 new sets of faces

@@ -36,6 +36,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="SquadWanted"
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
+run/max_fps=60
 config/icon="uid://b74kfklrwvw5s"
 config/windows_native_icon="res://assets/images/happy cat 16x.ico"
 
