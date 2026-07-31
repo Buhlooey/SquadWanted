@@ -9,7 +9,7 @@ var gameNode: Node2D
 var isWanted: bool
 
 var doGravity: bool = false
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravityStrength = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 @onready var eventEmitter: FmodEventEmitter2D = $FmodEventEmitter2D
 
@@ -30,7 +30,7 @@ func _ready():
 func _physics_process(delta) -> void:
 	if !is_on_floor():
 		if doGravity:
-			velocity.y += gravity * delta
+			velocity.y += gravityStrength * delta
 
 	var collision: KinematicCollision2D = move_and_collide(velocity*delta)
 	if collision:

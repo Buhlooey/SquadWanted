@@ -2,11 +2,13 @@ extends Node2D
 
 # ~~~~~~~~~~~~~~~ VARIABLES/INITIALIZATION ~~~~~~~~~~~~~~~
 
-const SPRITE_SIZE: int = 48
-const BORDER_SPAWN_WIDTH: int = 10
-const BORDER_SPAWN_HEIGHT: int = 8
-const GRID_WIDTH_LIMIT: int = 11
-const GRID_HEIGHT_LIMIT: int = 9
+const BASE_SPRITE_SIZE: float = 48
+const GAME_AREA_HEIGHT: int = 360
+const GAME_AREA_WIDTH: int = 480
+# const BORDER_SPAWN_WIDTH: int = 10
+# const BORDER_SPAWN_HEIGHT: int = 8
+# const GRID_WIDTH_LIMIT: int = 11
+# const GRID_HEIGHT_LIMIT: int = 9
 const INVALID_ANGLE: float = 50
 
 # ~~~~~ Game Rules ~~~~~
@@ -41,8 +43,13 @@ var moveAngle: float = INVALID_ANGLE
 
 ## Whether or not faces will bounce off of the edge of the screen or loop to the other side of it. Used in: Scattered, Bounce.
 @export var doBounceOnEdges: bool
+@export var gravity: float
 
+## The time bank when the game starts.
 @export var initialWaitTime: int = 15
+
+## Scalar for face size. The base size (scale 1.0) is 48x48.
+@export var faceScale: float = 4.0
 
 var canClick: bool = true
 
@@ -151,8 +158,9 @@ func initializeRound():
 	
 	# Place faces
 	if placementMode == PlaceMode.GRID:
-		gridWidth = min(gridWidth, GRID_WIDTH_LIMIT)
-		gridHeight = min(gridHeight, GRID_HEIGHT_LIMIT)
+		var faceSize: float = BASE_SPRITE_SIZE * faceScale
+		# gridWidth = min(gridWidth, GRID_WIDTH_LIMIT)
+		# gridHeight = min(gridHeight, GRID_HEIGHT_LIMIT)
 
 		var xMidpointIndex: float = float(gridWidth-1)/2.0
 		var yMidpointIndex: float = float(gridHeight-1)/2.0
@@ -160,9 +168,9 @@ func initializeRound():
 		var wantedFaceY: int = randi_range(0, gridHeight-1)
 
 		for x in range(gridWidth):
-			var xPos: int = int(SPRITE_SIZE * float(x - xMidpointIndex))
+			var xPos: int = int(faceSize * float(x - xMidpointIndex))
 			for y in range(gridHeight):
-				var yPos: int = int(SPRITE_SIZE * float(y - yMidpointIndex))
+				var yPos: int = int(faceSize * float(y - yMidpointIndex))
 
 				var faceName: String
 				var wanted: bool = false
@@ -172,22 +180,27 @@ func initializeRound():
 				else:
 					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(faceName, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted, faceScale)
 
 	elif placementMode == PlaceMode.BORDER:
+		var faceSize: float = BASE_SPRITE_SIZE * faceScale
+
 		if borderToUse < 0 or borderToUse > 3:
 			borderToUse = randi_range(0,3) # 0=top, 1=bottom, 2=left, 3=right
 
 		if borderToUse <= 1: # top or bottom
 			var yPos: float
+			var faceCount: int = floori(GAME_AREA_WIDTH / faceSize)
+			print("Face count: ", faceCount)
+
 			if borderToUse == 0:
 				yPos = gameArea.position.y
 			else:
 				yPos = gameArea.end.y
-			var midpointIndex: float = float(BORDER_SPAWN_WIDTH-1)/2.0
-			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_WIDTH-1)
-			for x in range(BORDER_SPAWN_WIDTH):
-				var xPos: int = int(SPRITE_SIZE * float(x - midpointIndex))
+			var midpointIndex: float = float(faceCount-1)/2.0
+			var wantedFaceIndex: int = randi_range(0, faceCount-1)
+			for x in range(faceCount):
+				var xPos: int = int(faceSize * float(x - midpointIndex))
 				var faceName: String
 				var wanted: bool = false
 				if x == wantedFaceIndex:
@@ -196,18 +209,21 @@ func initializeRound():
 				else:
 					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(faceName, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted, faceScale)
 		
 		else: # left or right
 			var xPos: float
+			var faceCount: int = floori(GAME_AREA_HEIGHT / faceSize)
+			print("Face count: ", faceCount)
+
 			if borderToUse == 2:
 				xPos = gameArea.position.x
 			else:
 				xPos = gameArea.end.x
-			var midpointIndex: float = float(BORDER_SPAWN_HEIGHT-1)/2.0
-			var wantedFaceIndex: int = randi_range(0, BORDER_SPAWN_HEIGHT-1)
-			for y in range(BORDER_SPAWN_WIDTH):
-				var yPos: int = int(SPRITE_SIZE * float(y - midpointIndex))
+			var midpointIndex: float = float(faceCount-1)/2.0
+			var wantedFaceIndex: int = randi_range(0, faceCount-1)
+			for y in range(faceCount):
+				var yPos: int = int(faceSize * float(y - midpointIndex))
 				var faceName: String
 				var wanted: bool = false
 				if y == wantedFaceIndex:
@@ -216,7 +232,7 @@ func initializeRound():
 				else:
 					faceName = currFaceSet[randi_range(0, currFaceSet.size()-1)]
 
-				initializeFace(faceName, Vector2(xPos, yPos), wanted)
+				initializeFace(faceName, Vector2(xPos, yPos), wanted, faceScale)
 		
 	elif placementMode == PlaceMode.CLUSTERS: #TODO
 		pass # create a set number of clusters, then add faces as children of those clusters
@@ -235,9 +251,11 @@ func initializeRound():
 			initializeFace(faceName,
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x), -80),
 							wanted,
+							faceScale,
 							moveVelocity,
 							randomizeAngleIfApplicable(),
-							true)
+							true,
+							gravity)
 
 	else: # SCATTERED is default
 		# scatter faces randomly about the board
@@ -254,6 +272,7 @@ func initializeRound():
 							Vector2(randf_range(gameArea.position.x, gameArea.end.x),
 									randf_range(gameArea.position.y, gameArea.end.y)),
 							wanted,
+							faceScale,
 							moveVelocity,
 							randomizeAngleIfApplicable())
 	
@@ -276,18 +295,20 @@ func initializeRound():
 	currFaceSet.append(currWantedFace)
 
 
-func initializeFace(faceName: String, facePosition: Vector2, isWanted, faceVelocity: int = 0, faceMoveAngle: float = 0, doGravity: bool = false) -> void:
+func initializeFace(faceName: String, facePosition: Vector2, isWanted, sizeScale: float = 1.0, faceVelocity: int = 0, faceMoveAngle: float = 0, doGravity: bool = false, gravityStrength: float = 0) -> void:
 	var faceNode: CharacterBody2D = faceScene.instantiate()
 	faceNode.faceName = faceName
 	faceNode.textures = faceSetImages[faceName]
-	faceNode.gameNode = self
 	faceNode.set_global_position(facePosition)
+	faceNode.isWanted = isWanted
+	faceNode.scale *= sizeScale
 	faceNode.set_velocity(Vector2(faceVelocity*cos(faceMoveAngle), faceVelocity*sin(faceMoveAngle)))
 	faceNode.doGravity = doGravity
-	faceNode.isWanted = isWanted
+	faceNode.gravityStrength = gravityStrength
 	if isWanted:
 		faceNode.add_to_group("CorrectFace")
 		wantedIcon.set_texture(faceSetImages[faceName][0])
+	faceNode.gameNode = self
 	add_child(faceNode)
 
 
@@ -384,37 +405,38 @@ func loadLevelPreset(index: int = -1) -> void:
 		index = randi_range(0, currSection["levels"].size()-1)
 	
 	var level: Dictionary = currSection["levels"][index]
-	placementMode = int(level["placeMode"]) as PlaceMode
+	placementMode = int(level.get("placeMode", 0)) as PlaceMode
+	faceScale = level.get("faceScale", 1.0)
+	
 
 	if placementMode == PlaceMode.SCATTERED:
-		faces = level["faces"]
-		moveVelocity = level["moveVelocity"]
-		sameMoveDir = level["sameMoveDir"]
-		doWaveMovementX = level["doWaveMovementX"]
-		doWaveMovementY = level["doWaveMovementY"]
-		doBounceOnEdges = level["doBounceOnEdges"]
+		faces = level.get("faces", 1)
+		moveVelocity = level.get("moveVelocity", 0)
+		sameMoveDir = level.get("sameMoveDir", false)
+		doWaveMovementX = level.get("doWaveMovementX", false)
+		doWaveMovementY = level.get("doWaveMovementY", false)
+		doBounceOnEdges = level.get("doBounceOnEdges", false)
 	elif placementMode == PlaceMode.GRID:
-		gridWidth = level["gridWidth"]
-		gridHeight = level["gridHeight"]
+		gridWidth = level.get("gridWidth", 1)
+		gridHeight = level.get("gridHeight", 1)
 		doBounceOnEdges = false
 	elif placementMode == PlaceMode.BORDER:
-		borderToUse = level["borderToUse"]
+		borderToUse = level.get("borderToUse", 0)
 		doBounceOnEdges = false
 	elif placementMode == PlaceMode.CLUSTERS:
-		faces = level["faces"]
-		clusters = level["clusters"]
-		moveVelocity = level["moveVelocity"]
-		sameMoveDir = level["sameMoveDir"]
-		doWaveMovementX = level["doWaveMovementX"]
-		doWaveMovementY = level["doWaveMovementY"]
+		faces = level.get("faces", 1)
+		clusters = level.get("clusters", 3)
+		moveVelocity = level.get("moveVelocity", 80)
+		sameMoveDir = level.get("sameMoveDir", false)
+		doWaveMovementX = level.get("doWaveMovementX", false)
+		doWaveMovementY = level.get("doWaveMovementY", false)
 		doBounceOnEdges = false
 	elif placementMode == PlaceMode.BOUNCE:
-		faces = level["faces"]
-		moveVelocity = level["moveVelocity"]
-		sameMoveDir = level["sameMoveDir"]
-		doWaveMovementX = level["doWaveMovementX"]
-		doWaveMovementY = level["doWaveMovementY"]
-		doBounceOnEdges = level["doBounceOnEdges"]
+		faces = level.get("faces", 1)
+		moveVelocity = level.get("moveVelocity", 80)
+		gravity = level.get("gravity", 800)
+		sameMoveDir = level.get("sameMoveDir", false)
+		doBounceOnEdges = level.get("doBounceOnEdges", true)
 
 
 # ~~~~~ Helpers ~~~~~
@@ -454,6 +476,7 @@ func randomizeAngleIfApplicable() -> float:
 	if !sameMoveDir or moveAngle == INVALID_ANGLE:
 		moveAngle = randf_range(0.0, PI*2.0)
 	return moveAngle
+
 func clearFaces(onlyIncorrect: bool = false):
 	for child in get_children():
 		if child.is_in_group("Face"):

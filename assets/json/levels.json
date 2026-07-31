@@ -136,8 +136,9 @@
 				{
 					"placeMode": 4,
 					"faces": 20,
-					"moveVelocity": 300,
-					"sameMoveDir": true,
+					"moveVelocity": 100,
+					"gravity": 500,
+					"sameMoveDir": false,
 					"doWaveMovementX": false,
 					"doWaveMovementY": false,
 					"doBounceOnEdges": true
