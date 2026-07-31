@@ -171,7 +171,7 @@
 			"sequential": false,
 			"musicSection": 2,
 			"faces": [
-				"Alex"
+				"Alex", "Dyl", "Soda", "Tyflo"
 			],
 			"levels": [
 				{
@@ -228,6 +228,9 @@
 		"section2": {
 			"sequential": false,
 			"musicSection": 3,
+			"faces": [
+				"Alex", "Dyl", "Soda", "Tyflo"
+			],
 			"levels": [
 				{
 					"placeMode": 0,
