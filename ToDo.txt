@@ -30,6 +30,8 @@ ALPHA BUILD 3: More Content
 - More spotlight effects
 - 1 new music variation
 - 1 new visual environment set
+- Clusters placement mode
+- Wave movement
 
 ---
 
