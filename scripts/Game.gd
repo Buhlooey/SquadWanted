@@ -55,7 +55,6 @@ var moveAngle: float = INVALID_ANGLE
 
 # ~~~~~ Other Variables ~~~~~
 var score: int = 0
-var currSectionIndex: int = 0
 var levelsPerSection: int = 10
 
 var correctBonus: float = 3.0
@@ -64,7 +63,6 @@ var incorrectPenalty: float = 5.0
 var canClick: bool = true
 var canParry: float = true
 var parryWindow: float = DEFAULT_PARRY_WINDOW
-
 
 var playSectionIntro: bool = true
 var animationStyle: String = "0"
@@ -94,6 +92,7 @@ var currWantedFace: String
 var levelsFilePath: String = "res://assets/json/levels.json"
 var currSection: Dictionary
 @onready var gameJson: Dictionary = loadJson(levelsFilePath)
+var currSectionIndex: int = 0
 var sequentialLevelIndex: int = 0
 
 # ~~~~~ Child Node References ~~~~~
@@ -158,7 +157,6 @@ func _process(_delta: float):
 # Only handles parrying. Clicks are handled by signal function _on_game_area_input_event().
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("parry"):
-		print("Parry key pressed")
 		if !canParry or !canClick:
 			return
 		canParry = false
@@ -173,7 +171,6 @@ func _input(event: InputEvent) -> void:
 			setupParryTimerCircle()
 			
 			parryWindow /= 2
-			print("Parried!")
 			
 			await parryTimer.timeout
 			gameTimer.set_paused(false)
@@ -240,7 +237,7 @@ func initializeRound():
 		if borderToUse <= 1: # top or bottom
 			var yPos: float
 			var faceCount: int = floori(GAME_AREA_WIDTH / faceSize)
-			print("Face count: ", faceCount)
+			# print("Face count: ", faceCount) #DEBUG
 
 			if borderToUse == 0:
 				yPos = gameArea.position.y
@@ -263,7 +260,7 @@ func initializeRound():
 		else: # left or right
 			var xPos: float
 			var faceCount: int = floori(GAME_AREA_HEIGHT / faceSize)
-			print("Face count: ", faceCount)
+			# print("Face count: ", faceCount) #DEBUG
 
 			if borderToUse == 2:
 				xPos = gameArea.position.x
@@ -373,6 +370,7 @@ func startGame() -> void:
 	canClick = false
 	flavorTextPopup.hide()
 	gameOverPopup.hide()
+	currSectionIndex = 0
 	sequentialLevelIndex = 0
 	parryWindow = DEFAULT_PARRY_WINDOW
 	startNewSection()
@@ -418,7 +416,7 @@ func loadSection(sectionName: String) -> void:
 			push_warning("Game.loadSection(): gameJson[\"sections\"] does not have a section named ", sectionName, ". Using random fallback section ", randomSectionName, ".")
 			sectionName = randomSectionName
 	
-	print("Loading section ", sectionName)
+	# print("Loading section ", sectionName) #DEBUG
 	currSection = gameJson["sections"][sectionName]
 	
 	if currSection.get("sequential"):
@@ -559,7 +557,7 @@ func startNewSection(byIndex: bool = true, sectionName: String = "") -> void:
 		animationStyle = "1"
 	else:
 		animationStyle = str(randi_range(1, animationStyleCount+1))
-		print("Animation style: {animationStyle}")
+		# print("Animation style: {animationStyle}") #DEBUG
 
 
 # ~~~~~ Signals ~~~~~
@@ -626,7 +624,7 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						break
 
 				if !correctFaceFound:
-					print("Incorrect face clicked")
+					# print("Incorrect face clicked") #DEBUG
 					var timeLeft: float = gameTimer.get_time_left() - incorrectPenalty
 					if timeLeft < 0:
 						gameTimer.stop()
@@ -669,6 +667,6 @@ func _on_correct_guess_pause_timer_timeout() -> void:
 
 
 func _on_fmod_music_timeline_marker(params: Dictionary):
-	print("FMOD timeline marker crossed: ", params)
+	# print("FMOD timeline marker crossed: ", params)
 	if params["name"] == "Drumroll":
 		startDrumroll.emit()

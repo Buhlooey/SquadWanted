@@ -518,7 +518,7 @@ offset_left = -73.0
 offset_top = -75.0
 offset_right = 117.0
 offset_bottom = -35.0
-text = "SQUADSPOTTER"
+text = "SQUADSPOTTER :)"
 
 [node name="VolumeSliderMusic" parent="TitleScreen" unique_id=1159624231 instance=ExtResource("3_cvmbd")]
 layout_mode = 0
@@ -543,12 +543,12 @@ offset_top = 90.0
 offset_right = 303.0
 offset_bottom = 208.0
 theme_override_font_sizes/normal_font_size = 10
-text = "Music, sound, art, programming, secret slice of pizza 🍕: Buhlooey
+text = "Music, sound, art, programming: Buhlooey
 Voice talent: Alex, Tyflo, Dyl, and Soda thanks guys
 Concept: Wanted! (New Super Mario Bros., Super Mario 64 DS) by Nintendo
 
 Audio Engine: FMOD by Firelight Technologies Pty Ltd. + fmod-gdextension by utopia-rise
-Made (with <3!) in Godot 4"
+Made (with <3!) in Godot 4.6"
 
 [node name="Game" type="Node2D" parent="." unique_id=1576560368 groups=["Game"]]
 visible = false
