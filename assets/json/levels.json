@@ -11,9 +11,7 @@
 		"intro": {
 			"sequential": true,
 			"musicSection": 0,
-			"faces": [
-				"Alex", "Dyl", "Soda", "Tyflo"
-			],
+			"faces": ["Alex", "Dyl", "Soda", "Tyflo"],
 			"levels": [
 				{
 					"placeMode": 1,
@@ -68,7 +66,7 @@
 				{
 					"placeMode": 0,
 					"faces": 60,
-					"moveVelocity": 20,
+					"moveVelocity": 50,
 					"sameMoveDir": true,
 					"doWaveMovementX": false,
 					"doWaveMovementY": false,
@@ -77,7 +75,7 @@
 				{
 					"placeMode": 0,
 					"faces": 60,
-					"moveVelocity": 20,
+					"moveVelocity": 50,
 					"sameMoveDir": false,
 					"doWaveMovementX": false,
 					"doWaveMovementY": false,
@@ -95,7 +93,7 @@
 				{
 					"placeMode": 1,
 					"gridWidth": 8,
-					"gridHeight": 8
+					"gridHeight": 7
 				},
 				{
 					"placeMode": 2,

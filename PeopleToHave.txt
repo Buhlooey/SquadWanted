@@ -4,23 +4,17 @@ Dyl
 Soda
 Tyflo
 
-Squad Classics, set II
-Mer
-Kazuki
-Muff
-Skull
-
 Squad 2 Mainstays, set I
 Quick
 Pepper
 Neea
 Exley
 
-Squad Classics, set III
-Milky
-Yumi
-Light
-Droo
+Squad Classics, set II
+Mer
+Kazuki
+Muff
+Skull
 
 Squad 2 Mainstays, set II
 Winry
@@ -28,12 +22,19 @@ Nana
 Daz
 Olimar
 
-Squad Phantoms
+Squad Phantoms, set I
 Drea
 Mika
 Ace
 Billy (AMONG US!!!!!!!!!)
 
+Squad Classics, set III
+Milky
+Yumi
+Light
+Droo
+
+Squad Phantoms, set II
 Ry
 Mik
 Phil
@@ -41,7 +42,6 @@ Crass
 
 Alters
 Serena
-Jo
 Chris 
 Soot
-maybe Anna
+Anna

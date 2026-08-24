@@ -9,7 +9,10 @@ var gameNode: Node2D
 var isWanted: bool
 
 var doGravity: bool = false
-var gravityStrength = ProjectSettings.get_setting("physics/2d/default_gravity")
+var currGravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+var storedVelocity: Vector2
+var storedGravity: float = currGravity
 
 @onready var eventEmitter: FmodEventEmitter2D = $FmodEventEmitter2D
 
@@ -30,7 +33,7 @@ func _ready():
 func _physics_process(delta) -> void:
 	if !is_on_floor():
 		if doGravity:
-			velocity.y += gravityStrength * delta
+			velocity.y += currGravity * delta
 
 	var collision: KinematicCollision2D = move_and_collide(velocity*delta)
 	if collision:
@@ -57,7 +60,7 @@ func screenWrap(edgeName:String) -> void:
 func clickFace():
 	if isWanted:
 		doGravity = false
-		velocity = Vector2(0,0)
+		velocity = Vector2.ZERO
 		eventEmitter.set_parameter("Event", "Found")
 		eyesSprite.set_visible(true)
 	else:
@@ -71,6 +74,18 @@ func onNotFound():
 	eventEmitter.set_parameter("Event", "NotFound")
 	eventEmitter.play()
 	# set_velocity(Vector2(0,0))
+
+
+func onParryStart():
+	storedVelocity = velocity
+	velocity = Vector2.ZERO
+	storedGravity = currGravity
+	currGravity = 0.0
+
+
+func onParryEnd():
+	velocity = storedVelocity
+	currGravity = storedGravity
 
 ## OLD SCREENWRAP
 # func screenWrap() -> void:

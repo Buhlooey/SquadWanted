@@ -7,8 +7,7 @@ X Presets for levels, which are randomly selected
 X A set of presets for intro levels
 	- 2x2 grid, larger grids, borders, slow movements
 X Popups for time gains/losses (+3, -5)
-? Time cap (60s)
-- Parry key
+X Parry key
 X Audio buses
 X Main menu volume control
 
@@ -19,7 +18,7 @@ X Section changes every 10 levels
 	- Music variations differ between sections
 X City streets background
 X Transition between sections
-- Audio balancing
+X Audio balancing
 - Hard section
 - Refine sections
 
@@ -47,6 +46,7 @@ Future features:
 - High score tracking
 - High score saving
 - Hard Mode
+- Time cap in hard mode? (ex. cannot exceed 60s)
 - Dialogue + Story
 
 Environments:

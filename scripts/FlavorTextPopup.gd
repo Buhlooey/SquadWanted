@@ -12,4 +12,4 @@ func showSectionComplete() -> void:
 	show()
 
 func setText(newText: String) -> void:
-	text = str("[center]", newText)
+	text = newText
