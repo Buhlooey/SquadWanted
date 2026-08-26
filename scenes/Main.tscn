@@ -539,11 +539,31 @@ busName = "SFX"
 [node name="CreditsText" type="RichTextLabel" parent="TitleScreen" unique_id=253333146]
 layout_mode = 0
 offset_left = -315.0
-offset_top = 90.0
+offset_top = -178.0
 offset_right = 303.0
-offset_bottom = 208.0
+offset_bottom = 176.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 10
-text = "Music, sound, art, programming: Buhlooey
+text = "CONTROLS:
+LeftClick: Pick the guy
+F11: Fullscreen
+(I haven't implemented pausing yet sorry)
+P / RightClick: Parry
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Music, sound, art, programming: Buhlooey
 Voice talent: Alex, Tyflo, Dyl, and Soda thanks guys
 Concept: Wanted! (New Super Mario Bros., Super Mario 64 DS) by Nintendo
 
@@ -724,6 +744,7 @@ wait_time = 30.0
 one_shot = true
 
 [node name="ParryTimer" type="Timer" parent="Game" unique_id=217840784]
+wait_time = 3.0
 one_shot = true
 
 [node name="CorrectGuessPauseTimer" type="Timer" parent="Game" unique_id=1918505060]

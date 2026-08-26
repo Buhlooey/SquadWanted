@@ -19,8 +19,8 @@ X Section changes every 10 levels
 X City streets background
 X Transition between sections
 X Audio balancing
-- Hard section
-- Refine sections
+X Hard section
+X Refine sections
 
 ALPHA BUILD 3: More Content
 - 1-2 new sets of faces
@@ -32,6 +32,7 @@ ALPHA BUILD 3: More Content
 - 1 new visual environment set
 - Clusters placement mode
 - Wave movement
+- Basic per-session high score
 
 ---
 
