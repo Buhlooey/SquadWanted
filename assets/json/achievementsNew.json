@@ -1,0 +1,75 @@
+{
+	"ShortTimer1": {
+		"name": "No Escape!",
+		"hint": "Find a wanted Squadmate with less than one second remaining."
+	},
+	"ShortTimer2": {
+		"name": "Not Even Close",
+		"hint": "Find a wanted Squadmate with less than 0.1 seconds remaining."
+	},
+	"Parry": {
+		"name": "That's Hype",
+		"hint": "Parry the timer and successfully find the wanted Squadmate while time is stopped.",
+		"unlockedFlavor": "I don't know if that's how clocks work but kinda awesome regardless."
+	},
+	"WinNormalMode": {
+		"name": "",
+		"hint": "Find the secret Squadmate.",
+		"unlockedFlavor": "She was wanted for some reason."
+	},
+	"WinHardMode": {
+		"name": "Dead Or Alive",
+		"hint": "Uncover the secret behind the SquadSpotter operation.",
+		"unlockedFlavor": "Who knows what he could've done if you didn't? Made another game? You've done a good thing today."
+	},
+	"FindOneManyTimes": {
+		"name": "F*** This Fish In Particular",
+		"hint": "Find a Squadmate 50 times in total."
+	},
+	"FindMultipleManyTimes": {
+		"name": "F*** These Six Fish In Particular",
+		"hint": "Find six different Squadmates 50 times in total."
+	},
+
+	"FindAllSquad1": {
+		"name": "OG",
+		"hint": "Find every Squadmate in the Squad Classics category.",
+		"unlockedFlavor": "Members of the original Squad."
+	},
+
+	"FindAllSquad2": {
+		"name": "New Blood",
+		"hint": "Find every Squadmate in the Squad 2 Mainstays category.",
+		"unlockedFlavor": "Recent additions to the long-running band of troublemakers."
+	},
+
+	"FindAllPhantoms": {
+		"name": "Infrequent Flyers",
+		"hint": "Find every Squadmate in the Squad Phantoms category.",
+		"unlockedFlavor": "Long-time members who are rarely found doing business today."
+	},
+
+	"FindAllAlters": {
+		"name": "On the Flipside...",
+		"hint": "Find every Squadmate in the Alters category.",
+		"unlockedFlavor": "The alter egos of the group - identities weaponized for unknown, but certainly nefarious purposes."
+	},
+
+	"CompleteLogs": {
+		"name": "Logged Out",
+		"hint": "Complete the Squadlogs, unlocking all information about all Squadmates.",
+		"unlockedFlavor": "Now pick a favorite quote."
+	},
+
+	"SecretPizza": {
+		"name": "Hungry Hungry Pizza For Me",
+		"hint": "Find the secret slice of pizza.",
+		"unlockedFlavor": "Yummers!"
+	},
+
+	"id": {
+		"name": "",
+		"hint": "",
+		"unlockedFlavor": ""
+	}
+}

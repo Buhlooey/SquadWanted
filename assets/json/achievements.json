@@ -1,0 +1,73 @@
+{
+	"ShortTimer1": {
+		"name": "No Escape!",
+		"hint": "Find a wanted Squadmate with less than one second remaining.",
+		"unlockedDesc": "Found a wanted Squadmate with less than one second remaining."
+	},
+	"ShortTimer2": {
+		"name": "Not Even Close",
+		"hint": "Find a wanted Squadmate with less than 0.1 seconds remaining.",
+		"unlockedDesc": "Found a wanted Squadmate with less than 0.1 seconds remaining."
+	},
+	"Parry": {
+		"name": "Because Every Good Game Needs One",
+		"hint": "Parry the timer.",
+		"unlockedDesc": "Parried the timer. I don't know if that's how clocks work but kinda awesome regardless."
+	},
+	"WinNormalMode": {
+		"name": "",
+		"hint": "Find the secret Squadmate.",
+		"unlockedDesc": "Found Jo, the secret Squadmate. She was wanted for some reason."
+	},
+	"WinHardMode": {
+		"name": "",
+		"hint": "Uncover the secret behind the SquadSpotter operation.",
+		"unlockedDesc": "Found Bluey and uncovered the secret behind the SquadSpotter operation. Who knows what he could've done if you didn't? Made another game? You've done a good thing today."
+	},
+	"FindOneManyTimes": {
+		"name": "Fuck This Fish In Particular",
+		"hint": "Find a Squadmate 50 times in total.",
+		"unlockedDesc": "Found a Squadmate 50 times in total."
+	},
+	"FindMultipleManyTimes": {
+		"name": "Fuck These Six Fish In Particular",
+		"hint": "Find six different Squadmates 50 times in total.",
+		"unlockedDesc": "Found six different Squadmates 50 times in total."
+	},
+
+	"FindAllSquad1": {
+		"name": "OG",
+		"hint": "Find every Squadmate in the Squad Classics category.",
+		"unlockedDesc": "Found every Squadmate in the Squad Classics category, members of the original Squad."
+	},
+
+	"FindAllSquad2": {
+		"name": "New Blood",
+		"hint": "Find every Squadmate in the Squad 2 Mainstays category.",
+		"unlockedDesc": "Found every Squadmate in the Squad 2 Mainstays category, recent additions to the long-running band."
+	},
+
+	"FindAllPhantoms": {
+		"name": "Infrequent Flyers",
+		"hint": "Find every Squadmate in the Squad Phantoms category.",
+		"unlockedDesc": "Found every Squadmate in the Squad Phantoms category, long-time members who are only occasionally found doing business today."
+	},
+
+	"FindAllAlters": {
+		"name": "On the Flipside...",
+		"hint": "Find every Squadmate in the Alters category, the alter egos of the group.",
+		"unlockedDesc": "Find every Squadmate in the Alters category, the alter egos of the group."
+	},
+
+	"CompleteLogs": {
+		"name": "Logged Out",
+		"hint": "Complete the Squadlogs, unlocking all information about all Squadmates.",
+		"unlockedDesc": "Completed the Squadlogs, unlocking all information about all Squadmates. Now pick a favorite quote."
+	},
+
+	"id": {
+		"name": "",
+		"hint": "",
+		"unlockedDesc": ""
+	}
+}
