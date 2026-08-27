@@ -125,6 +125,9 @@ var gameArea: Rect2
 @onready var flavorTextPopup: RichTextLabel = $FlavorTextPopup
 @onready var gameOverPopup: Sprite2D = $GameOverPopup
 
+# Other
+@onready var mouseFollowers: Node2D = $MouseFollowers
+
 # ~~~~~ Other Node References ~~~~~
 @onready var mainNode: Node2D = get_tree().get_root().get_node("Main")
 
@@ -141,6 +144,7 @@ signal parryEnd()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	canClick = false
 	set_visible(false)
 	musicPlayer.play()
 	gameArea = gameAreaCollider.get_shape().get_rect()
@@ -153,6 +157,8 @@ func _process(_delta: float):
 		updateTimeTextLabel()
 	if !parryTimer.is_stopped():
 		updateParryTimerCircle()
+	if canClick:
+		mouseFollowers.global_position = get_global_mouse_position()
 
 # Only handles parrying. Clicks are handled by signal function _on_game_area_input_event().
 func _input(event: InputEvent) -> void:
@@ -176,7 +182,7 @@ func _input(event: InputEvent) -> void:
 			gameTimer.set_paused(false)
 			parryEnd.emit()
 			grayscaleAnimator.play("endGrayscale")
-			hideParryTimerCircle()
+			parryTimerCircle.hide()
 		else:
 			parrySoundPlayer.set_parameter("Successful", 0)
 			parrySoundPlayer.play()
@@ -336,6 +342,8 @@ func initializeRound():
 	gameTimer.set_paused(false)
 	gameTimer.start()
 
+	mouseFollowers.global_position = get_global_mouse_position()
+	mouseFollowers.show()
 	canClick = true
 	canParry = true
 
@@ -364,6 +372,7 @@ func initializeFace(faceName: String, facePosition: Vector2, isWanted, sizeScale
 func reinitializeRound() -> void:
 	clearFaces()
 	clearPopups()
+	mouseFollowers.hide()
 	initializeRound()
 
 func startGame() -> void:
@@ -376,6 +385,7 @@ func startGame() -> void:
 	startNewSection()
 	gameTimer.set_wait_time(initialWaitTime)
 	playSectionIntro = true
+	mouseFollowers.hide()
 	initializeRound()
 	show()
 
@@ -528,8 +538,6 @@ func setupParryTimerCircle() -> void:
 func updateParryTimerCircle() -> void:
 	parryTimerCircle.value = parryTimer.time_left
 
-func hideParryTimerCircle() -> void:
-	parryTimerCircle.hide()
 
 # Faces
 
@@ -588,14 +596,14 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						if !parryTimer.is_stopped():
 							parryTimer.stop()
 							grayscaleAnimator.play("endGrayscale")
-							hideParryTimerCircle()
+							grayscaleAnimator.play("endGrayscale")
+							parryTimerCircle.hide()
 
 						var timePopup: Node2D = timePopupScene.instantiate()
 						timePopup.setTimeChange(correctBonus)
 						add_child(timePopup)
 						timePopup.global_position = viewport.get_mouse_position()
 
-						updateTimeTextLabelOnCorrectGuess()
 						# Section/level set switch
 						if score % levelsPerSection == 0:
 							musicPlayer.stop()
@@ -614,8 +622,10 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 							playSectionIntro = true
 							# if gameJson["sections"]["sequence"]
 							loadSectionBySequenceIndex(currSectionIndex)
+						updateTimeTextLabelOnCorrectGuess()
 						correctGuessPauseTimer.start()
 						await advanceRound
+
 						if score % levelsPerSection == 0:
 							mainNode.transition.play("transition1start")
 							await mainNode.transition.animation_finished
@@ -624,6 +634,11 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						break
 
 				if !correctFaceFound:
+					if !parryTimer.is_stopped():
+						gameTimer.set_paused(false)
+						parryTimer.stop()
+						parryTimerCircle.hide()
+						grayscaleAnimator.play("endGrayscale")
 					# print("Incorrect face clicked") #DEBUG
 					var timeLeft: float = gameTimer.get_time_left() - incorrectPenalty
 					if timeLeft < 0:

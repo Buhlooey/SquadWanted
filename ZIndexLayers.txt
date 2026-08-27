@@ -1,0 +1,17 @@
+-1:
+- Main background
+
+0:
+- Title screen and menus
+- Playing field background
+- Playing field spotlight
+- Faces
+
+1:
+- Wanted background
+
+2:
+- Wanted spotlights
+
+3:
+- Wanted icon

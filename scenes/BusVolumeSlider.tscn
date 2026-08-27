@@ -4,39 +4,41 @@
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="2_fanse"]
 [ext_resource type="Theme" uid="uid://w3kgkoatsp5c" path="res://assets/QuantityTextSmall.tres" id="3_inasq"]
 
-[node name="BusVolumeSlider" type="VSlider" unique_id=1159624231]
-offset_left = -8.0
-offset_top = -64.0
-offset_right = 8.0
-offset_bottom = 64.0
+[node name="BusVolumeSlider" type="VBoxContainer" unique_id=1470451347]
+anchors_preset = -1
+anchor_right = 0.125
+anchor_bottom = 0.55600005
+offset_bottom = -0.16001892
+alignment = 1
+script = ExtResource("1_gaf78")
+metadata/_edit_use_anchors_ = true
+
+[node name="Slider" type="VSlider" parent="." unique_id=1159624231]
+custom_minimum_size = Vector2(80, 120)
+layout_mode = 2
 max_value = 1.0
 step = 0.01
 tick_count = 10
+ticks_on_borders = true
 ticks_position = 2
-script = ExtResource("1_gaf78")
 
 [node name="SliderName" type="RichTextLabel" parent="." unique_id=1899157156]
-layout_mode = 0
-offset_left = -56.0
-offset_top = 110.0
-offset_right = 72.0
-offset_bottom = 168.0
+layout_mode = 2
 theme = ExtResource("2_fanse")
 theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 text = "Music"
+fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SliderValue" type="RichTextLabel" parent="." unique_id=669117740]
-layout_mode = 0
-offset_left = -44.0
-offset_top = 145.0
-offset_right = 61.0
-offset_bottom = 190.0
+layout_mode = 2
 theme = ExtResource("3_inasq")
 theme_override_font_sizes/normal_font_size = 24
 text = "100%"
+fit_content = true
 horizontal_alignment = 1
 
-[connection signal="value_changed" from="." to="." method="_on_value_changed"]
+[connection signal="drag_ended" from="Slider" to="." method="_on_slider_drag_ended"]
+[connection signal="value_changed" from="Slider" to="." method="_on_slider_value_changed"]

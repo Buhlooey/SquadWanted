@@ -167,6 +167,26 @@
 				
 			]
 		},
+		"fuckyou": {
+			"sequential": false,
+			"musicSection": 3,
+			"faces": [
+
+			],
+			"levels": [
+				{
+					"placeMode": 4,
+					"faces": 300,
+					"moveVelocity": 800,
+					"gravity": 2000,
+					"sameMoveDir": false,
+					"doWaveMovementX": false,
+					"doWaveMovementY": false,
+					"doBounceOnEdges": true
+				}
+			]
+			
+		},
 		"challenge1": {
 			"sequential": false,
 			"musicSection": 2,

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dk4x0xac04raq" path="res://assets/images/faces/EyesAlex.png" id="3_q4u30"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ounrp"]
-radius = 24.0
+radius = 28.0
 
 [node name="Face" type="CharacterBody2D" unique_id=2089047892 groups=["Face"]]
 collision_layer = 2
