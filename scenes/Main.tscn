@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://c0a761kixd3io" path="res://assets/images/EmblemTransitionBG.png" id="12_qmy6f"]
 [ext_resource type="Texture2D" uid="uid://b74kfklrwvw5s" path="res://assets/images/SquadSpotterEmblem.png" id="13_mwfav"]
 [ext_resource type="Texture2D" uid="uid://doa0hr2xkkgyv" path="res://assets/images/96x shittily drawn circle.png" id="14_bb450"]
+[ext_resource type="Script" uid="uid://rq0fk1dd0cdm" path="res://scripts/OptionsMenu.gd" id="17_yxlcp"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -396,13 +397,20 @@ _data = {
 shader = ExtResource("11_ft6cd")
 shader_parameter/intensity = 1.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iba3"]
+bg_color = Color(0.04667713, 0.04667713, 0.04667713, 0.9019608)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [sub_resource type="Animation" id="Animation_qmy6f"]
 resource_name = "RESET"
 length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/path = NodePath("Transition/EmblemTransitionBg:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -414,7 +422,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/path = NodePath("Transition/SquadSpotterEmblem:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -430,7 +438,7 @@ length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/path = NodePath("Transition/EmblemTransitionBg:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -442,7 +450,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/path = NodePath("Transition/SquadSpotterEmblem:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -458,7 +466,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("EmblemTransitionBg:scale")
+tracks/0/path = NodePath("Transition/EmblemTransitionBg:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -470,7 +478,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SquadSpotterEmblem:scale")
+tracks/1/path = NodePath("Transition/SquadSpotterEmblem:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -490,12 +498,6 @@ _data = {
 [node name="Main" type="Node2D" unique_id=1195642785]
 script = ExtResource("1_mwfav")
 
-[node name="BG" type="Sprite2D" parent="." unique_id=923291719]
-z_index = -1
-position = Vector2(320, 180)
-scale = Vector2(640, 360)
-texture = SubResource("GradientTexture1D_wrlmn")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=242340406]
 position = Vector2(320, 180)
 
@@ -505,6 +507,12 @@ anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 360.0
 script = ExtResource("1_nxtc6")
+
+[node name="BG" type="Sprite2D" parent="TitleScreen" unique_id=923291719]
+z_index = -1
+position = Vector2(320, 180)
+scale = Vector2(640, 360)
+texture = SubResource("GradientTexture1D_wrlmn")
 
 [node name="MainMenu" type="VBoxContainer" parent="TitleScreen" unique_id=738939792]
 layout_mode = 1
@@ -543,111 +551,6 @@ text = "Info + Credits	"
 [node name="OptionsButton" type="Button" parent="TitleScreen/MainMenu" unique_id=763945891]
 layout_mode = 2
 text = "Options"
-
-[node name="OptionsMenu" type="Panel" parent="TitleScreen" unique_id=1715315128]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.075
-anchor_top = 0.075
-anchor_right = 0.925
-anchor_bottom = 0.925
-metadata/_edit_use_anchors_ = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/OptionsMenu" unique_id=1866540648]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -140.0
-offset_top = -131.0
-offset_right = 140.0
-offset_bottom = 131.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen/OptionsMenu/VBoxContainer" unique_id=699116583]
-layout_mode = 2
-bbcode_enabled = true
-text = "Options"
-fit_content = true
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TitleScreen/OptionsMenu/VBoxContainer" unique_id=590215402]
-layout_mode = 2
-alignment = 1
-
-[node name="VolumeContianer" type="VBoxContainer" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer" unique_id=2067376106]
-layout_mode = 2
-script = ExtResource("4_1iba3")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=782970993]
-layout_mode = 2
-text = "Volume"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=1406586365]
-layout_mode = 2
-
-[node name="VolumeSliderMusic" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer" unique_id=1159624231 instance=ExtResource("3_cvmbd")]
-layout_mode = 2
-busName = "Music"
-
-[node name="VolumeSliderSFX" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer" unique_id=228938550 instance=ExtResource("3_cvmbd")]
-layout_mode = 2
-busName = "SFX"
-
-[node name="FaceSoundEmitter" type="FmodEventEmitter2D" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=295464754]
-event_name = "event:/SFX/Voicelines"
-event_guid = "{90005da6-8ede-4d59-84de-f7e415315d28}"
-fmod_parameters/Face/id = -6653342042967358386
-fmod_parameters/Face = "Alex"
-fmod_parameters/Face/labels = PackedStringArray("Alex", "Dyl", "Soda", "Tyflo")
-fmod_parameters/Face/variant_type = 4
-fmod_parameters/Event/id = -5415404342882972388
-fmod_parameters/Event = "Misclick"
-fmod_parameters/Event/labels = PackedStringArray("Found", "Misclick", "NotFound")
-fmod_parameters/Event/variant_type = 4
-position = Vector2(151, 112)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer" unique_id=1451425547]
-layout_mode = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=282335665]
-layout_mode = 2
-text = "Time Between Rounds (sec)"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="TimeBetweenRoundsContainer" type="HBoxContainer" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2083081777]
-layout_mode = 2
-script = ExtResource("5_1nqs0")
-
-[node name="TimeBetweenRoundsSlider" type="HSlider" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" unique_id=1810559519]
-custom_minimum_size = Vector2(100, 20)
-layout_mode = 2
-min_value = 1.0
-max_value = 3.0
-step = 0.1
-value = 3.0
-tick_count = 5
-ticks_on_borders = true
-
-[node name="TimeBetweenRoundsTextLabel" type="RichTextLabel" parent="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" unique_id=1270174055]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-text = "3.0
-"
-fit_content = true
-
-[node name="OptionsCloseButton" type="Button" parent="TitleScreen/OptionsMenu/VBoxContainer" unique_id=865296497]
-layout_mode = 2
-text = "Close"
 
 [node name="CreditsPanel" type="Panel" parent="TitleScreen" unique_id=1568390091]
 visible = false
@@ -970,27 +873,140 @@ visible = false
 z_index = 10
 texture = ExtResource("10_lhr70")
 
-[node name="EmblemTransitionBg" type="Sprite2D" parent="." unique_id=2103191154]
+[node name="OptionsMenu" type="Control" parent="." unique_id=1203798232]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+script = ExtResource("17_yxlcp")
+
+[node name="OptionsPanel" type="Panel" parent="OptionsMenu" unique_id=1266622630]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.075
+anchor_right = 0.925
+anchor_bottom = 0.925
+theme_override_styles/panel = SubResource("StyleBoxFlat_1iba3")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsMenu/OptionsPanel" unique_id=1910623681]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -131.0
+offset_right = 140.0
+offset_bottom = 131.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OptionsMenu/OptionsPanel/VBoxContainer" unique_id=1593257193]
+layout_mode = 2
+bbcode_enabled = true
+text = "Options"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsMenu/OptionsPanel/VBoxContainer" unique_id=1635770816]
+layout_mode = 2
+alignment = 1
+
+[node name="VolumeContianer" type="VBoxContainer" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer" unique_id=2023565305]
+layout_mode = 2
+script = ExtResource("4_1iba3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=1163593280]
+layout_mode = 2
+text = "Volume"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=893393260]
+layout_mode = 2
+
+[node name="VolumeSliderMusic" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer" unique_id=1470451347 instance=ExtResource("3_cvmbd")]
+layout_mode = 2
+busName = "Music"
+
+[node name="VolumeSliderSFX" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer" unique_id=1957965810 instance=ExtResource("3_cvmbd")]
+layout_mode = 2
+busName = "SFX"
+
+[node name="FaceSoundEmitter" type="FmodEventEmitter2D" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer" unique_id=724597556]
+event_name = "event:/SFX/Voicelines"
+event_guid = "{90005da6-8ede-4d59-84de-f7e415315d28}"
+fmod_parameters/Face/id = -6653342042967358386
+fmod_parameters/Face = "Alex"
+fmod_parameters/Face/labels = PackedStringArray("Alex", "Dyl", "Soda", "Tyflo")
+fmod_parameters/Face/variant_type = 4
+fmod_parameters/Event/id = -5415404342882972388
+fmod_parameters/Event = "Misclick"
+fmod_parameters/Event/labels = PackedStringArray("Found", "Misclick", "NotFound")
+fmod_parameters/Event/variant_type = 4
+position = Vector2(151, 112)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer" unique_id=1529007240]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2093366381]
+layout_mode = 2
+text = "Time Between Rounds (sec)"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="TimeBetweenRoundsContainer" type="HBoxContainer" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1322409622]
+layout_mode = 2
+script = ExtResource("5_1nqs0")
+
+[node name="TimeBetweenRoundsSlider" type="HSlider" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" unique_id=1187159146]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+min_value = 1.0
+max_value = 3.0
+step = 0.1
+value = 3.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="TimeBetweenRoundsTextLabel" type="RichTextLabel" parent="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" unique_id=1007533122]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "3.0
+"
+fit_content = true
+
+[node name="OptionsCloseButton" type="Button" parent="OptionsMenu/OptionsPanel/VBoxContainer" unique_id=1513541049]
+layout_mode = 2
+text = "Close"
+
+[node name="Transition" type="Node2D" parent="." unique_id=367234224]
+
+[node name="EmblemTransitionBg" type="Sprite2D" parent="Transition" unique_id=2103191154]
 z_index = 11
 position = Vector2(320, 180)
 scale = Vector2(6, 6)
 texture = ExtResource("12_qmy6f")
 
-[node name="SquadSpotterEmblem" type="Sprite2D" parent="." unique_id=1532080427]
+[node name="SquadSpotterEmblem" type="Sprite2D" parent="Transition" unique_id=1532080427]
 z_index = 11
 position = Vector2(320, 180)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("13_mwfav")
 
-[node name="TransitionAnimator" type="AnimationPlayer" parent="." unique_id=1380736167]
+[node name="TransitionAnimator" type="AnimationPlayer" parent="Transition" unique_id=1380736167]
+root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_mwfav")
 
 [connection signal="pressed" from="TitleScreen/MainMenu/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="TitleScreen/MainMenu/CreditsButton" to="TitleScreen" method="_on_credits_button_pressed"]
-[connection signal="pressed" from="TitleScreen/MainMenu/OptionsButton" to="TitleScreen" method="_on_options_button_pressed"]
-[connection signal="drag_ended" from="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer/VolumeSliderSFX" to="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VolumeContianer" method="_on_volume_slider_sfx_drag_ended"]
-[connection signal="value_changed" from="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer/TimeBetweenRoundsSlider" to="TitleScreen/OptionsMenu/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" method="_on_time_between_rounds_slider_value_changed"]
-[connection signal="pressed" from="TitleScreen/OptionsMenu/VBoxContainer/OptionsCloseButton" to="TitleScreen" method="_on_options_close_button_pressed"]
+[connection signal="pressed" from="TitleScreen/MainMenu/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="TitleScreen/CreditsPanel/VBoxContainer/CreditsCloseButton" to="TitleScreen" method="_on_credits_close_button_pressed"]
 [connection signal="input_event" from="Game/GameArea" to="Game" method="_on_game_area_input_event"]
 [connection signal="body_entered" from="Game/WrapEdges/BottomEdge" to="Game/WrapEdges/BottomEdge" method="_on_body_entered"]
@@ -1000,3 +1016,6 @@ libraries/ = SubResource("AnimationLibrary_mwfav")
 [connection signal="timeout" from="Game/GameTimer" to="Game" method="_on_game_timer_timeout"]
 [connection signal="timeout" from="Game/CorrectGuessPauseTimer" to="Game" method="_on_correct_guess_pause_timer_timeout"]
 [connection signal="timeline_marker" from="Game/FmodAndAudio/FmodMusic" to="Game" method="_on_fmod_music_timeline_marker"]
+[connection signal="drag_ended" from="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer/HBoxContainer/VolumeSliderSFX" to="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VolumeContianer" method="_on_volume_slider_sfx_drag_ended"]
+[connection signal="value_changed" from="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer/TimeBetweenRoundsSlider" to="OptionsMenu/OptionsPanel/VBoxContainer/HBoxContainer/VBoxContainer/TimeBetweenRoundsContainer" method="_on_time_between_rounds_slider_value_changed"]
+[connection signal="pressed" from="OptionsMenu/OptionsPanel/VBoxContainer/OptionsCloseButton" to="." method="_on_options_close_button_pressed"]

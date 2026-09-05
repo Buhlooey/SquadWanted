@@ -1,28 +1,19 @@
 extends Control
 
 @onready var mainMenu: VBoxContainer = $MainMenu
-@onready var optionsMenu: Panel = $OptionsMenu
 @onready var creditsPanel: Panel = $CreditsPanel
 
 @onready var startButton: Button = $MainMenu/StartButton
 @onready var creditsButton: Button = $MainMenu/CreditsButton
 @onready var optionsButton: Button = $MainMenu/OptionsButton
 
+@onready var mainNode: Node2D = get_tree().root.find_child("Main", true, false)
 @onready var fmodMusic: FmodEventEmitter2D = get_tree().root.find_child("FmodMusic", true, false)
 
 func _ready() -> void:
-	optionsMenu.hide()
 	creditsPanel.hide()
 	mainMenu.show()
 
-
-func _on_options_button_pressed() -> void:
-	mainMenu.hide()
-	optionsMenu.show()
-
-func _on_options_close_button_pressed() -> void:
-	optionsMenu.hide()
-	mainMenu.show()
 
 func _on_credits_button_pressed() -> void:
 	mainMenu.hide()
