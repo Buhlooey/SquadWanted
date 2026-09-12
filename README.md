@@ -19,6 +19,7 @@ Prerelease testing:
 - JJ
 - (and more!)
 
+Other:
 - Programming, music, sound effects, art: Buhlooey
 - Concept inspired by Wanted! (New Super Mario Bros., Super Mario 64 DS) by Nintendo
 - Some likenesses inspired by Nintendo, Game Freak
