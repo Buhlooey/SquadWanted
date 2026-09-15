@@ -22,25 +22,25 @@ X Hard section
 X Refine sections
 
 
-v0.0.1 Post-test updates:
+v0.0.2 Post-test updates:
 Fixes:
 X Clicking Play button disables menu buttons (fixes multi-click bug)
 X Parry can no longer be activated on the title screen before starting first game
 X Selecting an incorrect face during a parry ends the parry visual effects
+
 Balance:
 X Parry time increased to 2 seconds (from 1)
-X Reduced penalty for wrong clicks to 3 seconds (from 5)
 x Slightly increased face hitbox size (remedies feeling like you had to "click ahead" of fast-moving faces)
+
 Features/QOL:
+X Added a spotlight effect and custom cursor to make the cursor's position easier to see
 X Added a proper title screen and logo, moving extraneous text/options to other menus
+X Added a proper options menu (fixes a minor issue with interacting with volume sliders)
+X Added option to shorten wait time between rounds; can be set between 1 and 3 seconds
 X Moved controls and options to a new Info + Credits menu
 X Explained how to parry in Controls
-X Added a proper options menu (fixes a minor issue with interacting with volume sliders)
 X Added sounds when changing volume
-X Added option to shorten wait time between rounds; can be set between 1 and 3 seconds
-X Added a spotlight effect and custom cursor to make the cursor's position easier to see
-- Rebalance annoying levels
-- Pause menu with options accessible
+
 
 
 ALPHA BUILD 2: More Content
@@ -54,6 +54,9 @@ ALPHA BUILD 2: More Content
 - Clusters placement mode
 - Wave movement
 - Basic per-session high score
+- Rebalance annoying levels
+- Pause menu with options accessible
+X Time bonuses/penalties for correct/incorrect guesses are now dynamic, becoming less forgiving as the game continues
 
 ---
 
