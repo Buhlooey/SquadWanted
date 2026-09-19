@@ -586,16 +586,15 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 						canClick = false
 						gameTimer.set_wait_time(gameTimer.get_time_left() + correctBonus)
 						# print("time left: ", gameTimer.get_time_left()) #DEBUG
-						updateTimeTextLabel()
 						gameTimer.set_paused(true)
 						thisFace.clickFace()
 						correctFaceFound = true
 						incrementScore()
 						clearFaces(true)
+						updateTimeTextLabelOnCorrectGuess()
 						
 						if !parryTimer.is_stopped():
 							parryTimer.stop()
-							grayscaleAnimator.play("endGrayscale")
 							grayscaleAnimator.play("endGrayscale")
 							parryTimerCircle.hide()
 
@@ -622,7 +621,6 @@ func _on_game_area_input_event(viewport:Node, event:InputEvent, _shape_idx:int) 
 							playSectionIntro = true
 							# if gameJson["sections"]["sequence"]
 							loadSectionBySequenceIndex(currSectionIndex)
-						updateTimeTextLabelOnCorrectGuess()
 						correctGuessPauseTimer.start()
 						await advanceRound
 

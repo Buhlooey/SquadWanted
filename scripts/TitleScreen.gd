@@ -16,12 +16,12 @@ func _ready() -> void:
 
 
 func _on_credits_button_pressed() -> void:
-	mainMenu.hide()
+	disableButtons()
 	creditsPanel.show()
 
 func _on_credits_close_button_pressed() -> void:
 	creditsPanel.hide()
-	mainMenu.show()
+	enableButtons()
 
 func disableButtons() -> void:
 	startButton.set_disabled(true)

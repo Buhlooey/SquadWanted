@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c8kp3wlpryct5" path="res://scripts/TimeBetweenRoundsContainer.gd" id="5_1nqs0"]
 [ext_resource type="Texture2D" uid="uid://taaonax6x105" path="res://assets/images/backgrounds/BGCityWanted.png" id="5_jlsqs"]
 [ext_resource type="Script" uid="uid://c52bhaoushieq" path="res://scripts/GameAreaEdge.gd" id="5_nxtc6"]
+[ext_resource type="Script" uid="uid://gcacg338r3c5" path="res://scripts/LevelLoader.gd" id="6_2ofn6"]
 [ext_resource type="Theme" uid="uid://bpeuqaii4tg7w" path="res://assets/Text.tres" id="6_c01mt"]
 [ext_resource type="Shader" uid="uid://bb5rrf70rqhqm" path="res://assets/shaders/grayscale.gdshader" id="6_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://belkkanxlad25" path="res://scenes/Spotlight.tscn" id="6_jlsqs"]
@@ -22,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://b74kfklrwvw5s" path="res://assets/images/SquadSpotterEmblem.png" id="13_mwfav"]
 [ext_resource type="Texture2D" uid="uid://doa0hr2xkkgyv" path="res://assets/images/96x shittily drawn circle.png" id="14_bb450"]
 [ext_resource type="Script" uid="uid://rq0fk1dd0cdm" path="res://scripts/OptionsMenu.gd" id="17_yxlcp"]
+[ext_resource type="StyleBox" uid="uid://bcq4nc45hg8xs" path="res://assets/SimplePanel.tres" id="18_ebg2g"]
 
 [sub_resource type="Gradient" id="Gradient_mla51"]
 colors = PackedColorArray(0, 0, 0.113725, 1, 0, 0, 0.113725, 1)
@@ -397,13 +399,6 @@ _data = {
 shader = ExtResource("11_ft6cd")
 shader_parameter/intensity = 1.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1iba3"]
-bg_color = Color(0.04667713, 0.04667713, 0.04667713, 0.9019608)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="Animation" id="Animation_qmy6f"]
 resource_name = "RESET"
 length = 0.1
@@ -560,6 +555,7 @@ anchor_left = 0.075
 anchor_top = 0.075
 anchor_right = 0.925
 anchor_bottom = 0.925
+theme_override_styles/panel = ExtResource("18_ebg2g")
 metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/CreditsPanel" unique_id=1863146707]
@@ -577,7 +573,7 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="TitleScreen/CreditsPanel/VBoxContainer" unique_id=2095817163]
+[node name="ControlsHeader" type="RichTextLabel" parent="TitleScreen/CreditsPanel/VBoxContainer" unique_id=2095817163]
 layout_mode = 2
 bbcode_enabled = true
 text = "Controls"
@@ -594,7 +590,7 @@ F11: Fullscreen
 P / RightClick: Parry, with less than 1 second on the timer (window halves with each success)"
 fit_content = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TitleScreen/CreditsPanel/VBoxContainer" unique_id=1928480387]
+[node name="CreditsHeader" type="RichTextLabel" parent="TitleScreen/CreditsPanel/VBoxContainer" unique_id=1928480387]
 layout_mode = 2
 bbcode_enabled = true
 text = "Credits"
@@ -627,6 +623,9 @@ faces = 200
 gridWidth = 8
 gridHeight = 8
 moveVelocity = 100
+
+[node name="LevelLoader" type="Node" parent="Game" unique_id=1102930073]
+script = ExtResource("6_2ofn6")
 
 [node name="GameArea" type="Area2D" parent="Game" unique_id=2043590849]
 collision_mask = 2
@@ -888,7 +887,7 @@ anchor_left = 0.075
 anchor_top = 0.075
 anchor_right = 0.925
 anchor_bottom = 0.925
-theme_override_styles/panel = SubResource("StyleBoxFlat_1iba3")
+theme_override_styles/panel = ExtResource("18_ebg2g")
 metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OptionsMenu/OptionsPanel" unique_id=1910623681]

@@ -1,0 +1,20 @@
+Thank you for your continued participation in the SquadSpotter Operation!
+
+~~~~~ ALPHA v0.0.2 ~~~~~
+Fixes:
+- Clicking Play button disables menu buttons (fixes multi-click bug)
+- Parry can no longer be activated on the title screen before starting first game
+- Selecting an incorrect face during a parry ends the parry visual effects
+
+Balance:
+- Parry time increased to 2 seconds (from 1)
+- Slightly increased face hitbox size (remedies feeling like you had to "click ahead" of fast-moving faces)
+
+Features/QOL:
+- Added a spotlight effect and custom cursor to make the cursor's position easier to see
+- Added a proper title screen and logo, moving extraneous text/options to other menus
+- Added a proper Options menu, and moved volume sliders to this menu (fixes a minor issue with interacting with volume sliders)
+- Added option to shorten wait time between rounds; can be set between 1 and 3 seconds
+- Changing SFX volume now plays sound effects
+- Added an Info + Credits screen, and moved controls and credits to this screen
+- Explained how to parry in the controls section

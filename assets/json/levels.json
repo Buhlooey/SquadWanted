@@ -7,6 +7,13 @@
 	],
 	"fallbackSections": ["challenge1", "challenge2"],
 
+	"baseTimeBonus": 3.0,
+	"timeBonusChange": -0.5,
+	"timeBonusMinimum": 1.0,
+	"baseTimePenalty": -3.0,
+	"timePenaltyChange": 0.5,
+	"timePenaltyMaximum": 5.0,
+
 	"sections": {
 		"intro": {
 			"sequential": true,
